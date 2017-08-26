@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="adminProduct">
+<head>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <!--<script type="text/javascript" src="angular.min.js"></script>-->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
+    <script type="text/javascript" src="/admin.js"></script>
+    <meta charset="UTF-8">
+    <title>Product Detail</title>
+</head>
+<body  ng-controller = "ProductDetailController as prodDetailCtrl">
+<div id="divMain"  class="w3-container">
+    <form name="productUpdateForm"  ng-submit="productUpdateForm.$valid && updateProduct()" novalidate>
+        <div class="w3-container"  style="padding:3px;width:80%;">
+            <h2>Product Detail</h2>
+        </div>
+        <div class="w3-container w3-card-4"  style="padding:3px;width:80%; overflow:auto; ">
+            <p>
+                <label class="w3-text"><b>Product Name</b></label><label class="w3-text-red w3-small"><b>*</b></label></p>
+            <p>
+                <input ng-model="inputPrdNm"class="w3-input_nowidth w3-border" style="width:90%" required/></p>
+            <p>
+                <label class="w3-text"><b>Description</b></label><label class="w3-text-red w3-small"><b>*</b></label></p>
+            <p>
+                <textarea rows="4" cols="50" class="w3-input_nowidth w3-border" style="width:90%" ng-model="inputPrdDesc"></textarea></p>
+        </div>
+        <div  class="w3-container"  style="padding:3px;width:80%;">
+            <p>
+                <input type="button" value="List" class="w3-button w3-green w3-left" ng-click="goToProductList()">
+                <input type="submit" value="Save" class="w3-button w3-green w3-right">
+            </p>
+        </div>
+    </form>
+</div>
+</body>
+</html>

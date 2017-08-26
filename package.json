@@ -1,0 +1,20 @@
+{
+  "name": "myapp",
+  "version": "1.0.0",
+  "description": "Simple Hello World App",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Shawn Kim",
+  "license": "ISC",
+  "dependencies": {
+    "angular-messages": "^1.6.6",
+    "body-parser": "^1.17.2",
+    "cors": "^2.8.4",
+    "ejs": "^2.5.7",
+    "express": "^4.15.3",
+    "mongojs": "^2.4.0",
+    "node-mysql": "^0.4.2"
+  }
+}
