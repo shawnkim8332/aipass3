@@ -41,10 +41,14 @@ AIP Assignment 3
 
 * Source: https://www.w3schools.com/js/js_conventions.asp
 
-# Angular JS Specific Coding Principle
+# Angular JS Specific Coding Principle //Richie
 
 1.
 
-# Node JS Specific Coding Principle
+# Node JS Specific Coding Principle //Shawn
+
+1.
+
+# HTML Coding Principle // Vatsh
 
 1.
