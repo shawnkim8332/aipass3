@@ -1,16 +1,16 @@
 var mySQL = require('mysql');
 var pool  = mySQL.createPool({
 
-    host     : 'localhost',
+ /*   host     : 'localhost',
     user     : 'aipgroup',
     password : 'aipgroup',
-    database : 'aipgroup'
-/*
+    database : 'aipgroup' */
+
     host     : 'ourcityshop.com.au',
     user     : 'ourcity9_aip2017',
     password : 'Minmin@1',
     database : 'ourcity9_aip2017_uts'
-*/
+
 });
 var getConnection = function (cb) {
     pool.getConnection(function (err, connection) {
