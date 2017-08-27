@@ -43,7 +43,19 @@ AIP Assignment 3
 
 # Angular JS Specific Coding Principle //Richie
 
-1.
+1.When using a module, avoid using a variable and instead use chaining with the getter syntax.
+
+2.Only set once and get for all other instances.
+
+3.Use named functions instead of passing an anonymous function in as a callback.
+
+4.Use the controllerAs syntax over the classic controller with $scope syntax.
+
+5.Define 1 component per file, recommended to be less than 400 lines of code.
+
+6.Define small functions, no more than 75 LOC (less is better).
+
+7.Use function declarations to hide implementation details. Keep your accessible members of the factory up top. Point those to function declarations that appears later in the file. For more details see this post.
 
 # Node JS Specific Coding Principle //Shawn
 
