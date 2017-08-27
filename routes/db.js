@@ -1,10 +1,12 @@
 var mySQL = require('mysql');
 var pool  = mySQL.createPool({
 
-    host     : 'localhost',
-    user     : 'aipgroup',
-    password : 'aipgroup',
-    database : 'aipgroup'
+    host     : 'aip.crpau3li1ooe.us-east-2.rds.amazonaws.com',
+	port	 : '3306',
+    user     : 'vatsh',
+    password : 'vatshpatel95',
+    database : 'aip_db'
+	
 /*
     host     : 'ourcityshop.com.au',
     user     : 'ourcity9_aip2017',

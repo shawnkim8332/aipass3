@@ -7,10 +7,11 @@ var mysql      = require('mysql');
 router.get("/product/list",function(req,res){
 
     var con = mysql.createConnection({
-        host     : 'localhost',
-        user     : 'aipgroup',
-        password : 'aipgroup',
-        database : 'aipgroup'
+    host     : 'aip.crpau3li1ooe.us-east-2.rds.amazonaws.com',
+    user     : 'vatsh',
+    password : 'vatshpatel95',
+    database : 'aip_db',
+	port	 : '3306'
     });
 
     con.connect(function(err) {
@@ -29,10 +30,11 @@ router.get("/product/list",function(req,res){
 router.get("/product/:id",function(req,res){
 
     var con = mysql.createConnection({
-        host     : 'localhost',
-        user     : 'aipgroup',
-        password : 'aipgroup',
-        database : 'aipgroup'
+    host     : 'aip.crpau3li1ooe.us-east-2.rds.amazonaws.com',
+    user     : 'vatsh',
+    password : 'vatshpatel95',
+    database : 'aip_db',
+	port	 : '3306'
     });
 
     con.connect(function(err) {
@@ -58,10 +60,11 @@ router.post('/product/update/:id', function(req, res, next){
 
 
     var con = mysql.createConnection({
-        host     : 'localhost',
-        user     : 'aipgroup',
-        password : 'aipgroup',
-        database : 'aipgroup'
+    host     : 'aip.crpau3li1ooe.us-east-2.rds.amazonaws.com',
+    user     : 'vatsh',
+    password : 'vatshpatel95',
+    database : 'aip_db',
+	port	 : '3306'
     });
 
     con.connect(function(err) {
@@ -80,10 +83,11 @@ router.post('/product/update/:id', function(req, res, next){
 router.get("/flavor/:id",function(req,res){
 
     var con = mysql.createConnection({
-        host     : 'localhost',
-        user     : 'aipgroup',
-        password : 'aipgroup',
-        database : 'aipgroup'
+    host     : 'aip.crpau3li1ooe.us-east-2.rds.amazonaws.com',
+    user     : 'vatsh',
+    password : 'vatshpatel95',
+    database : 'aip_db',
+	port	 : '3306'
     });
 
     con.connect(function(err) {
@@ -104,10 +108,11 @@ router.get("/flavor/:id",function(req,res){
 router.get("/ingredient/:id",function(req,res){
 
     var con = mysql.createConnection({
-        host     : 'localhost',
-        user     : 'aipgroup',
-        password : 'aipgroup',
-        database : 'aipgroup'
+    host     : 'aip.crpau3li1ooe.us-east-2.rds.amazonaws.com',
+    user     : 'vatsh',
+    password : 'vatshpatel95',
+    database : 'aip_db',
+	port	 : '3306'
     });
 
     con.connect(function(err) {
