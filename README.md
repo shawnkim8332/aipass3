@@ -63,4 +63,11 @@ AIP Assignment 3
 
 # HTML Coding Principle // Vatsh
 
-1.
+1. ID names should be defined in camelCase
+2. class names should be defined in lowercase
+3. All html tages should be defined in camel case
+4. no use of inline css styles and javascript
+5. Html Comments should show the end of html div's
+5. Proper html indentation should be applied
+6. Non-empty html elements must have corrsponding closing tags
+7. html document type must be declared as the first line of html code
