@@ -9,7 +9,7 @@ router.get("/product/list",function(req,res){
 
     getConnection(function (err, con) {
         if (err) throw err;
-        con.query("SELECT p.product_id  , p.product_nm, p.description FROM aipgroup.product as p", function (err, rows, fields) {
+        con.query("SELECT p.product_id  , p.product_nm, p.description FROM aip_db.product as p", function (err, rows, fields) {
             if (err){
                 console.log('Error while performing Query.');
                 con.release();
