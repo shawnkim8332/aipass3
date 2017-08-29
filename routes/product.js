@@ -1,17 +1,21 @@
 var express = require('express');
 var router = express.Router();
-//var app = express();
-var mysql      = require('mysql');
+var mysql = require('mysql');
 var getConnection = require('./db');
 
-
+//Retrieving product list from database
 router.get("/product/list",function(req,res){
-
     getConnection(function (err, con) {
         if (err) throw err;
-        con.query("SELECT p.product_id  , p.product_nm, p.description FROM aipgroup.product as p", function (err, rows, fields) {
+
+        var sql = "SELECT p.product_id, ";
+        sql += "p.product_nm,";
+        sql += "p.description";
+        sql += "FROM aipgroup.product as p";
+
+        con.query(sql, function (err, rows, fields) {
             if (err){
-                console.log('Error while performing Query.');
+                console.log('Error while retrieving product list data');
                 con.release();
                 return res.send(err);
             }
@@ -20,15 +24,23 @@ router.get("/product/list",function(req,res){
     });
 });
 
-
+//Retrieving single product data
 router.get("/product/:id",function(req,res){
     getConnection(function (err, con) {
         if (err) throw err;
-        var sql = "SELECT p.product_id  , p.product_nm, p.description FROM aipgroup.product as p where p.product_id = ?";
+
+        var sql = "SELECT p.product_id, ";
+        sql += "p.product_nm,";
+        sql += "p.description";
+        sql += "FROM aipgroup.product as p";
+        sql += "where p.product_id = ?";
+
+        //binding product id in the where clause
         var values = [req.params.id];
+
         con.query(sql, [values], function (err, rows, fields) {
             if (err){
-                console.log('Error while performing Query.');
+                console.log('Error while retrieving single product');
                 return res.send(err);
             }
             console.log('product data retrieved');
@@ -38,29 +50,40 @@ router.get("/product/:id",function(req,res){
     });
 });
 
+//Updating product data
 router.post('/product/update/:id', function(req, res, next){
+    // getting input data
     var product = req.body;
+
     getConnection(function (err, con) {
         if (err) throw err;
-        var sql = "UPDATE aipgroup.product set product_nm = ?  , description = ?  where product_id = ?";
+
+        var sql = "UPDATE aipgroup.product set product_nm = ?, description = ?  where product_id = ?";
+
+        //binding input data into update sql
         var values = [product.product_nm, product.description, product.product_id];
-        console.log(values);
+
         con.query(sql, values, function (err, result) {
             if (err) throw err;
-            console.log(result.affectedRows + " record updated");
+            console.log(result.affectedRows + " Product record updated");
             return res.json();
         });
     });
 });
 
+//Retrieving flavor data
 router.get("/flavor/:id",function(req,res){
     getConnection(function (err, con) {
         if (err) throw err;
-        var sql = "SELECT f.flavor_id  , f.flavor_nm FROM aipgroup.flavor as f where f.product_id = ?";
+
+        var sql = "SELECT f.flavor_id, f.flavor_nm FROM aipgroup.flavor as f where f.product_id = ?";
+
+        //binding flavor id in the where clause
         var values = [req.params.id];
+
         con.query(sql, [values], function (err, rows, fields) {
             if (err){
-                console.log('Error while performing Query.');
+                console.log('Error while retrieving flavor data');
                 return res.send(err);
             }
             return res.json(rows);
@@ -68,14 +91,26 @@ router.get("/flavor/:id",function(req,res){
     });
 });
 
+//Retrieving ingredient data
 router.get("/ingredient/:id",function(req,res){
     getConnection(function (err, con) {
         if (err) throw err;
-        var sql = "SELECT i.ingred_id  , i.ingred_nm  , q.quantity  , q.unit from aipgroup.ingredient as i  , aipgroup.ingred_qty as q where i.ingred_id = q.ingred_id and   q.flavor_id = ?";
+
+        var sql = "SELECT i.ingred_id,";
+        sql += "i.ingred_nm,";
+        sql += "q.quantity,";
+        sql += "q.unit ";
+        sql += "from aipgroup.ingredient as i,";
+        sql += "aipgroup.ingred_qty as q";
+        sql += "where i.ingred_id = q.ingred_id";
+        sql += "and   q.flavor_id = ?";
+
+        //binding flavor id in the where clause
         var values = [req.params.id];
+
         con.query(sql, [values], function (err, rows, fields) {
             if (err){
-                console.log('Error while performing Query.');
+                console.log('Error while retrieving ingredient Query.');
                 return res.send(err);
             }
             return res.json(rows);

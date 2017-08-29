@@ -5,7 +5,7 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var product = require('./routes/product');
 
-var port = 3000;
+var port = 8080;
 var app = express();
 
 
@@ -50,3 +50,4 @@ try {
 } catch (e) {
     console.log('There was an error', e);
 }
+
