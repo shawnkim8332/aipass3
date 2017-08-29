@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+//var app = express();
 var mysql = require('mysql');
 var getConnection = require('./db');
 
@@ -7,7 +8,6 @@ var getConnection = require('./db');
 router.get("/product/list",function(req,res){
     getConnection(function (err, con) {
         if (err) throw err;
-
         var sql = "SELECT p.product_id, ";
         sql += "p.product_nm,";
         sql += "p.description";
