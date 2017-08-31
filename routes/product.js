@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-//var app = express();
 var mysql = require('mysql');
 var getConnection = require('./db');
 
