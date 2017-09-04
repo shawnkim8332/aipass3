@@ -7,10 +7,6 @@ var pool  = mySQL.createPool({
     password : 'vatshpatel95',
     database : 'aip_db'
 	
- /*   host     : 'localhost',
-    user     : 'aipgroup',
-    password : 'aipgroup',
-    database : 'aipgroup' */
 });
 var getConnection = function (cb) {
     pool.getConnection(function (err, connection) {
@@ -18,6 +14,7 @@ var getConnection = function (cb) {
         //pass the error to the cb instead of throwing it
         if(err) {
             return cb(err);
+			console.log("Database connection error");
         }
         cb(null, connection);
     });

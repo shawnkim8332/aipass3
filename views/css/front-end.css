@@ -1,0 +1,32 @@
+nav ul li {
+	display:inline-block;
+	padding:0 20px;
+	list-style:none;
+}
+nav ul {
+	padding:20px 0;
+	border-bottom:1px solid #000;
+}
+header {
+	text-align:center;
+}
+header a {
+	text-decoration: none;
+	text-transform: uppercase;
+	font-size: 15px;
+	letter-spacing: 0.15em;
+	font-weight: 400;
+}
+.header-top a {
+	display:inline-block;
+	padding:0 10px;
+}
+#mainBody {
+	text-align:center;
+	padding:10px;
+}
+#mainBody input {
+	margin:10px;
+	width:50%;
+	outline:none;
+}

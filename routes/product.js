@@ -7,14 +7,14 @@ var getConnection = require('./db');
 router.get("/product/list",function(req,res){
     getConnection(function (err, con) {
         if (err) throw err;
-        var sql = "SELECT p.product_id, ";
-        sql += "p.product_nm,";
-        sql += "p.description";
-        sql += "FROM aipgroup.product as p";
+        var sql = "SELECT product_id,";
+        sql += " product_nm,";
+        sql += " description";
+        sql += " FROM product as p";
 
         con.query(sql, function (err, rows, fields) {
             if (err){
-                console.log('Error while retrieving product list data');
+                console.log('Error while retrieving product list data1');
                 con.release();
                 return res.send(err);
             }
@@ -29,9 +29,9 @@ router.get("/product/:id",function(req,res){
         if (err) throw err;
 
         var sql = "SELECT p.product_id, ";
-        sql += "p.product_nm,";
-        sql += "p.description";
-        sql += "FROM aipgroup.product as p";
+        sql += "p.product_nm, ";
+        sql += "p.description ";
+        sql += "FROM product as p ";
         sql += "where p.product_id = ?";
 
         //binding product id in the where clause
@@ -57,7 +57,7 @@ router.post('/product/update/:id', function(req, res, next){
     getConnection(function (err, con) {
         if (err) throw err;
 
-        var sql = "UPDATE aipgroup.product set product_nm = ?, description = ?  where product_id = ?";
+        var sql = "UPDATE product set product_nm = ?, description = ?  where product_id = ?";
 
         //binding input data into update sql
         var values = [product.product_nm, product.description, product.product_id];
@@ -75,7 +75,7 @@ router.get("/flavor/:id",function(req,res){
     getConnection(function (err, con) {
         if (err) throw err;
 
-        var sql = "SELECT f.flavor_id, f.flavor_nm FROM aipgroup.flavor as f where f.product_id = ?";
+        var sql = "SELECT f.flavor_id, f.flavor_nm FROM flavor as f where f.product_id = ?";
 
         //binding flavor id in the where clause
         var values = [req.params.id];
@@ -95,14 +95,14 @@ router.get("/ingredient/:id",function(req,res){
     getConnection(function (err, con) {
         if (err) throw err;
 
-        var sql = "SELECT i.ingred_id,";
-        sql += "i.ingred_nm,";
-        sql += "q.quantity,";
+        var sql = "SELECT i.ingred_id, ";
+        sql += "i.ingred_nm, ";
+        sql += "q.quantity, ";
         sql += "q.unit ";
-        sql += "from aipgroup.ingredient as i,";
-        sql += "aipgroup.ingred_qty as q";
-        sql += "where i.ingred_id = q.ingred_id";
-        sql += "and   q.flavor_id = ?";
+        sql += "from ingredient as i, ";
+        sql += "ingred_qty as q ";
+        sql += "where i.ingred_id = q.ingred_id ";
+        sql += "and   q.flavor_id = ? ";
 
         //binding flavor id in the where clause
         var values = [req.params.id];

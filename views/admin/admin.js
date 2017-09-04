@@ -11,11 +11,11 @@ var app = angular.module('adminProduct', ['ngRoute']);
 
     app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
         $routeProvider
-            .when("/", {
-                templateUrl : 'product_list.html'
-                ,  controller: 'ProductListController'
+            .when("/admin", {
+                templateUrl : 'product_list.html',
+			    controller: 'ProductListController'
             })
-            .when("/product/:id", {
+            .when("/admin/product/:id", {
                 templateUrl : 'product_detail.html'
                 ,  controller: 'ProductDetailController'
             });
@@ -28,17 +28,14 @@ var app = angular.module('adminProduct', ['ngRoute']);
     }]);
 	app.controller('ProductListController', function($scope, $http, $window){
         var app = this;
-
         $http.get('/api/product/list')
             .then(function(response) {
                 $scope.products = response.data;
             });
 
         $scope.goProductDetail = function (product){
-
-            $window.location.href = ("product_detail.html?id="+product.product_id);
+            $window.location.href = ("/admin/product_detail.html?id="+product.product_id);
         }
-
 	});
 
 app.controller('ProductDetailController', ['$scope', '$http', '$location', '$window',function($scope, $http, $location, $window){
@@ -57,15 +54,12 @@ app.controller('ProductDetailController', ['$scope', '$http', '$location', '$win
             $window.location.href = ("product_list.html");
         }
 
-
         $scope.updateProduct = function() {
-
             var data = {
                 product_id : product_id,
                 product_nm: $scope.inputPrdNm,
                 description : $scope.inputPrdDesc
             }
-
             var url = '/api/product/update/'+product_id;
 
             $http({
@@ -77,7 +71,7 @@ app.controller('ProductDetailController', ['$scope', '$http', '$location', '$win
                 alert("Successfully updated");
                 $window.location.reload();
             })
-                .catch(function (err) {});
+             .catch(function (err) {});
         };
 
 

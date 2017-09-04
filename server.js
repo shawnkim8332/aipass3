@@ -5,6 +5,7 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var product = require('./routes/product');
+var user = require('./routes/user');
 
 var app = express();
 
@@ -39,6 +40,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use('/', index);
 app.use('/api', product);
+app.use('/user', user);
 
 //Cors Setup For App
 app.use(function(req, res, next) {
