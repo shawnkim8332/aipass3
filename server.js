@@ -6,7 +6,6 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var product = require('./routes/product');
 var user = require('./routes/user');
-
 var app = express();
 
 //Server Ports
@@ -29,7 +28,7 @@ router.use(function(req, res, next) {
 });
 
 //Set Static Folder
-app.use(express.static(path.join(__dirname, 'client')));
+//app.use(express.static(path.join(__dirname, 'client')));
 
 //Cors Policy Definition
 var cors = require('cors')
@@ -51,6 +50,9 @@ app.use(function(req, res, next) {
 
 //Static Folder For App
 app.use(express.static('views'));
+app.get('*', function (req, res) {
+    res.sendFile(__dirname + '/views/index.html');
+});
 
 //Check Server Startup
 try {

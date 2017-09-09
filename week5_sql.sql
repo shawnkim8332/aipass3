@@ -6,16 +6,18 @@ reg_date TIMESTAMP
 );
 
 CREATE TABLE aip_db.users (
- `id` int(11) NOT NULL AUTO_INCREMENT,
+ `id` int(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
  `first_name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
  `last_name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `role` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
  `email` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
  `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
- `created` datetime NOT NULL,
- `modified` datetime NOT NULL,
- PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+ `created` TIMESTAMP,
+ `modified` TIMESTAMP
+); 
+Insert into aip_db.users (first_name,last_name,role,email,password,created,modified) values ('vatsh','patel','customer','vatsh@gmail.com','Minmin@1',now(),now());
+select * from aip_db.users where email = 'vatsh@gmail.com' AND password = 'Minmin@1';
+
 
 CREATE TABLE aip_db.flavor (
 flavor_id INT(6)  UNSIGNED AUTO_INCREMENT PRIMARY KEY,
@@ -81,7 +83,7 @@ select * from aip_db.ingredient;
 select * from aip_db.ingred_qty;
 
 -- Get Product
-SELECT p.product_id  , p.product_nm FROM aip_db.product as p ;
+SELECT p.product_id , p.product_nm FROM aip_db.product as p ;
 
 -- Get Flavor
 SELECT f.flavor_id  , f.flavor_nm FROM aip_db.flavor as f where f.product_id = 1 -- product_id

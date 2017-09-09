@@ -17,8 +17,7 @@ frontApp.config(['$routeProvider', '$locationProvider', function($routeProvider,
 			controller: 'loginController'
 		});
 	$locationProvider.html5Mode({
-		enabled: true,
-		requireBase: false
+		enabled: true
 	});
 
 }]);
@@ -40,23 +39,46 @@ frontApp.controller('signUpController', ['$scope', '$http', '$location', '$windo
                	email : $scope.inputSignUpEmail,
 				password : $scope.inputSignUpPassword
             }
-            var url = '/user/register';
-
-            $http({
-                url: url, // No need of IP address
-                method: 'POST',
-                data: data,
-                headers: {'Content-Type': 'application/json'}
-            }).then(function (response) {
-                $scope.myTxt = "Thank You For Registration!";
-                $window.location.reload();
-            })
-             .catch(function (err) {});
+		var url = '/user/register';
+		$http({
+			url: url, // No need of IP address
+			method: 'POST',
+			data: data,
+			headers: {'Content-Type': 'application/json'}
+		}).then(function (response) {
+			$scope.myTxt = "Thank You For Registration!";
+			$window.location.reload();
+		})
+		 .catch(function (err) {});
     }
 }]);
 
 frontApp.controller('loginController', ['$scope', '$http', '$location', '$window',function($scope, $http, $location, $window){
-
+		//on submit   
+	$scope.myRes = "You have not yet clicked submit";
+    $scope.logIn = function () {
+		console.log("Submit");
+		var data = {
+               	email : $scope.inputLogInEmail,
+				password : $scope.inputLogInPassword
+            }
+		var url = '/user/login';
+		$http({
+			url: url, // No need of IP address
+			method: 'POST',
+			data: data,
+			headers: {'Content-Type': 'application/json'}
+		}).then(function (response) {
+			console.log("res: ",response);
+			if(response.data == "notFound") {
+				$scope.myRes = "Invaild Username or Password!";
+			} else {
+				$scope.myRes = "Thank You For Loggin In!";
+			}
+			//	$window.location.reload();
+		})
+		 .catch(function (err) {});
+    }
 
 }]);
 
