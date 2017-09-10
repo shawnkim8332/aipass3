@@ -17,7 +17,7 @@ CREATE TABLE aip_db.users (
 ); 
 Insert into aip_db.users (first_name,last_name,role,email,password,created,modified) values ('vatsh','patel','customer','vatsh@gmail.com','Minmin@1',now(),now());
 select * from aip_db.users where email = 'vatsh@gmail.com' AND password = 'Minmin@1';
-
+update aip_db.users set role = "admin" where id = 1;
 
 CREATE TABLE aip_db.flavor (
 flavor_id INT(6)  UNSIGNED AUTO_INCREMENT PRIMARY KEY,

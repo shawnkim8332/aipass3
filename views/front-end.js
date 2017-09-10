@@ -12,6 +12,10 @@ frontApp.config(['$routeProvider', '$locationProvider', function($routeProvider,
 			templateUrl : 'signup.html',
 			controller: 'signUpController'
 		})
+		.when("/logout", {
+			templateUrl : 'home.html',
+			controller: 'logOutController'
+		})
 		.when("/login", {
 			templateUrl : 'login.html',
 			controller: 'loginController'
@@ -23,6 +27,10 @@ frontApp.config(['$routeProvider', '$locationProvider', function($routeProvider,
 }]);
 
 //Define Contorllers
+frontApp.controller('userCtrl', function($scope) {
+    $scope.user = localStorage.getItem("name");
+});
+
 frontApp.controller('indexFrontController', ['$scope', '$http', '$location', '$window',function($scope, $http, $location, $window){
 	
 
@@ -74,12 +82,23 @@ frontApp.controller('loginController', ['$scope', '$http', '$location', '$window
 				$scope.myRes = "Invaild Username or Password!";
 			} else {
 				$scope.myRes = "Thank You For Loggin In!";
+				localStorage.setItem("token", response.data.token);
+				localStorage.setItem("name", response.data.name);
+				alert("Thank You For Logging In");
+				$window.location.href = ("/");
 			}
 			//	$window.location.reload();
 		})
 		 .catch(function (err) {});
     }
 
+}]);
+
+frontApp.controller('logOutController', ['$scope', '$http', '$location', '$window',function($scope, $http, $location, $window){
+	localStorage.setItem("token", '');
+	localStorage.setItem("name", '');
+	alert("You have Logged Out Successfully");
+	$window.location.href = ("/");
 }]);
 
 })();

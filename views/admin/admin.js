@@ -13,11 +13,11 @@ var app = angular.module('adminProduct', ['ngRoute']);
         $routeProvider
             .when("/admin", {
                 templateUrl : 'product_list.html',
-			    controller: 'ProductListController'
+			    controller: 'ProductListController',
             })
             .when("/admin/product/:id", {
-                templateUrl : 'product_detail.html'
-                ,  controller: 'ProductDetailController'
+                templateUrl : 'product_detail.html',
+				controller: 'ProductDetailController',
             });
         $locationProvider.html5Mode({
             enabled: true,
@@ -26,17 +26,49 @@ var app = angular.module('adminProduct', ['ngRoute']);
         //$locationProvider.html5Mode(true);
 
     }]);
-	app.controller('ProductListController', function($scope, $http, $window){
-        var app = this;
-        $http.get('/api/product/list')
-            .then(function(response) {
-                $scope.products = response.data;
-            });
+	
+app.factory('AuthFactory', function($http) {
+    return {
+		authLogin : function() {
+			var url = '/user/auth';
+			data = localStorage.getItem("token");
+			$http({
+				url: url, // No need of IP address
+				method: 'POST',
+				data: data,
+				headers: {'Content-Type': 'application/json'}
+			}).then(function (response) {
+				if(response == 'Success') {
+					return true;
+				}
+				else {return false;}
+			})
+			 .catch(function (err) { return false; });
+		}
+	}
+});
 
-        $scope.goProductDetail = function (product){
-            $window.location.href = ("/admin/product_detail.html?id="+product.product_id);
-        }
-	});
+//app.run(['$rootScope', '$location', AuthFactory, function($rootScope, $location, AuthFactory) {
+//	$rootScope.$on('$routeChangeStart', function(event, current, AuthFactory) {
+////		$rootScope.pageTitle = current.$$route.title;
+//		if ((AuthFactory.authLogin == false) && current.$$route.withLogin || (AuthFactory.authLogin == true) && current.$$route.withoutLogin) {
+//			event.preventDefault();
+//			$location.path('/');
+//		}
+//	});
+//}]);
+	
+app.controller('ProductListController', function($scope, $http, $window){
+	var app = this;
+	$http.get('/api/product/list')
+		.then(function(response) {
+			$scope.products = response.data;
+		});
+
+	$scope.goProductDetail = function (product){
+		$window.location.href = ("/admin/product_detail.html?id="+product.product_id);
+	}
+});
 
 app.controller('ProductDetailController', ['$scope', '$http', '$location', '$window',function($scope, $http, $location, $window){
 

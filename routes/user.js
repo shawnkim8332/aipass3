@@ -40,7 +40,7 @@ router.post("/login",function(req,res){
 	getConnection(function (err, con) {
         if (err) throw err;
 
-        var sql = "select id,first_name from users where email = ? AND password = ?";
+        var sql = "select id,first_name,role from users where email = ? AND password = ?";
         //adding user values
         var value = [user.email,user.password];
 
@@ -55,10 +55,14 @@ router.post("/login",function(req,res){
 			} 
 			else {
 				console.log('user found: '+rows);
-				var token = jwt.sign(rows, 'userLogin');
+				var tokenData = {
+					username: rows[0].first_name,
+					scope: rows[0].role,
+					id: rows[0].id
+				};
+				var token = jwt.sign(tokenData, 'userLogin');
 				return res.json({
 					success: 'true',
-					id: rows[0].id,
 					name: rows[0].first_name,
 					token: token
 				});
@@ -67,5 +71,36 @@ router.post("/login",function(req,res){
         });
 	}); // end getConnection
 });
+
+//User Auth Function
+router.post("/auth",function(req,res){
+	console.log("Austh Called");
+    console.log(req.body);
+	var token = req.body.token || req.query.token || req.headers['x-access-token'];
+	  // decode token
+	  if (token) {
+		// verifies secret and checks exp
+		jwt.verify(token, 'userLogin', function(err, decoded) {      
+		  if (err) {
+			console.log(err);
+			return res.json({ success: false, message: 'Failed to authenticate token.' });
+		  } 
+		  else {
+			// if everything is good, save to request for use in other routes
+			console.log("token Scope : ",decoded.scope);
+			if(decoded.scope == 'admin') {
+				return "Success";
+			}
+			else {
+				return "Log-In-As-Admin";
+			}
+		  }
+		});
+	  }
+	  else {
+		return "error";
+	  }
+});
+
 
 module.exports = router;

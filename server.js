@@ -3,6 +3,7 @@
 var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
+var jwt = require('jsonwebtoken');
 var index = require('./routes/index');
 var product = require('./routes/product');
 var user = require('./routes/user');

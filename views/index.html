@@ -13,9 +13,15 @@
     </head>
     <body ng-app="front-end">
 		<header>
-        	<div class="header-top">
-            	<a href="/login" target="_self">Login</a>
-                <a href="/signup">Sign Up</a>
+        	<div ng-controller="userCtrl">
+                <div class="header-top not-logged-in" ng-show="{{user === ''}}">
+                    <a href="/login">Login</a>
+                    <a href="/signup">Sign Up</a>
+                </div>
+                <div class="header-top logged-in" ng-hide="{{user === ''}}">
+                    <a href="">Hello, {{user}}</a>
+                    <a href="/logout">Log Out</a>
+                </div>
             </div>
             <h1>AIP Assignment 3 Site</h1>
         	<nav>
@@ -23,6 +29,7 @@
                 	<li><a href="/">Home</a></li>
                     <li><a href="">Products</a></li>
                     <li><a href="">Cart</a></li>
+                     <li><a href="">Food News Api</a></li>
                 </ul>
             </nav>
         </header>
