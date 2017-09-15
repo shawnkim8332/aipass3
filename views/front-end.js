@@ -54,8 +54,14 @@ frontApp.controller('signUpController', ['$scope', '$http', '$location', '$windo
 			data: data,
 			headers: {'Content-Type': 'application/json'}
 		}).then(function (response) {
-			$scope.myTxt = "Thank You For Registration!";
-			$window.location.reload();
+			if(response.data == "dupEmail") {
+				$scope.myTxt = "Username with same email address Exists!";
+			}
+			else {
+				$scope.myTxt = "Thank You For Registration!";
+				$window.location.reload();
+			}
+			
 		})
 		 .catch(function (err) {});
     }
@@ -80,7 +86,8 @@ frontApp.controller('loginController', ['$scope', '$http', '$location', '$window
 			console.log("res: ",response);
 			if(response.data == "notFound") {
 				$scope.myRes = "Invaild Username or Password!";
-			} else {
+			} 
+			else {
 				$scope.myRes = "Thank You For Loggin In!";
 				localStorage.setItem("token", response.data.token);
 				localStorage.setItem("name", response.data.name);
