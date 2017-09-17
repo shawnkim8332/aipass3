@@ -5,8 +5,6 @@ var mysql = require('mysql');
 var getConnection = require('./db');
 var jwt = require('jsonwebtoken');
 var crypto = require('crypto'),algorithm = 'aes-256-ctr',password = 'd6F3Efeq';
-var cipher = crypto.createCipher(algorithm,password)
-
 
 //User Register Function
 router.post("/register",function(req,res){
@@ -18,6 +16,7 @@ router.post("/register",function(req,res){
 
 		var sql = "Insert into users (first_name,last_name,role,email,password,created,modified) values ?";
 		//encrypting password
+		var cipher = crypto.createCipher(algorithm,password);
 		var encPass = cipher.update(user.password,'utf8','hex')
 		encPass += cipher.final('hex');
 		//converting date to timestamp
@@ -47,8 +46,9 @@ router.post("/login",function(req,res){
 	getConnection(function (err, con) {
         if (err) throw err;
 
-        var sql = "select id,first_name,role from users where email = ? AND password = ?";
+        var sql = "select id,first_name,role,password from users where email = ?";
 		//encrypting password
+		var cipher = crypto.createCipher(algorithm,password);
 		var encPass = cipher.update(user.password,'utf8','hex')
 		encPass += cipher.final('hex');
         //adding user values
@@ -65,17 +65,23 @@ router.post("/login",function(req,res){
 			} 
 			else {
 				console.log('user found: '+rows);
-				var tokenData = {
-					username: rows[0].first_name,
-					scope: rows[0].role,
-					id: rows[0].id
-				};
-				var token = jwt.sign(tokenData, 'userLogin');
-				return res.json({
-					success: 'true',
-					name: rows[0].first_name,
-					token: token
-				});
+				if(rows[0].password == encPass) {
+					var tokenData = {
+						username: rows[0].first_name,
+						scope: rows[0].role,
+						id: rows[0].id
+					};
+					var token = jwt.sign(tokenData, 'userLogin');
+					return res.json({
+						success: 'true',
+						name: rows[0].first_name,
+						token: token
+					});
+				}
+				else {
+					console.log('Invalid Password');
+					return res.send('notFound');
+				}
 			}
 			con.release();
         });
