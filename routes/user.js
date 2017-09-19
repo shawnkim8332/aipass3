@@ -5,35 +5,44 @@ var mysql = require('mysql');
 var getConnection = require('./db');
 var jwt = require('jsonwebtoken');
 var crypto = require('crypto'),algorithm = 'aes-256-ctr',password = 'd6F3Efeq';
+var cipher = crypto.createCipher(algorithm,password)
+
 
 //User Register Function
 router.post("/register",function(req,res){
     console.log(req.body);
 	var user = req.body;
-	getConnection(function (err, con) {
-		console.log("register Called");
-		if (err) throw err;
-
-		var sql = "Insert into users (first_name,last_name,role,email,password,created,modified) values ?";
-		//encrypting password
-		var cipher = crypto.createCipher(algorithm,password);
-		var encPass = cipher.update(user.password,'utf8','hex')
-		encPass += cipher.final('hex');
-		//converting date to timestamp
-		var now=new Date().toISOString().slice(0, 19).replace('T', ' ');
-		//adding user values
-		var values = [[user.name,user.lastname,'customer',user.email,encPass,now,now]];
-
-		con.query(sql, [values], function (err, rows, fields) {
-			if (err){
-				console.log('Error while adding user: '+err);
-				return res.send(err);
-			}
-			console.log('user added');
-			con.release();
-			return res.json(rows);
-		});
-	}); // end getConnection
+	var checkEmail = checkEmailExists(user.email);
+	if(checkEmail == 1) {
+		//no user exists
+		getConnection(function (err, con) {
+			console.log("register Called");
+			if (err) throw err;
+	
+			var sql = "Insert into users (first_name,last_name,role,email,password,created,modified) values ?";
+			//encrypting password
+			var encPass = cipher.update(user.password,'utf8','hex')
+  			encPass += cipher.final('hex');
+			//converting date to timestamp
+			var now=new Date().toISOString().slice(0, 19).replace('T', ' ');
+			//adding user values
+			var values = [[user.name,user.lastname,'customer',user.email,encPass,now,now]];
+	
+			con.query(sql, [values], function (err, rows, fields) {
+				if (err){
+					console.log('Error while adding user: '+err);
+					return res.send(err);
+				}
+				console.log('user added');
+				con.release();
+				return res.json(rows);
+			});
+		}); // end getConnection
+	}
+	else {
+		console.log("Duplicate email found");
+		return res.send('dupEmail');
+	}
 });
 
 
@@ -46,11 +55,10 @@ router.post("/login",function(req,res){
 	getConnection(function (err, con) {
         if (err) throw err;
 
-        var sql = "select id,first_name,role,password from users where email = ?";
-		//encrypting password
-		var cipher = crypto.createCipher(algorithm,password);
-		var encPass = cipher.update(user.password,'utf8','hex')
-		encPass += cipher.final('hex');
+        var sql = "select id,first_name,role from users where email = ? AND password = ?";
+		//encrypt password to check it's validity
+		var encPass = cipher.update(text,'utf8','hex')
+  		encPass += cipher.final('hex');
         //adding user values
         var value = [user.email,encPass];
 
@@ -65,23 +73,17 @@ router.post("/login",function(req,res){
 			} 
 			else {
 				console.log('user found: '+rows);
-				if(rows[0].password == encPass) {
-					var tokenData = {
-						username: rows[0].first_name,
-						scope: rows[0].role,
-						id: rows[0].id
-					};
-					var token = jwt.sign(tokenData, 'userLogin');
-					return res.json({
-						success: 'true',
-						name: rows[0].first_name,
-						token: token
-					});
-				}
-				else {
-					console.log('Invalid Password');
-					return res.send('notFound');
-				}
+				var tokenData = {
+					username: rows[0].first_name,
+					scope: rows[0].role,
+					id: rows[0].id
+				};
+				var token = jwt.sign(tokenData, 'userLogin');
+				return res.json({
+					success: 'true',
+					name: rows[0].first_name,
+					token: token
+				});
 			}
 			con.release();
         });
