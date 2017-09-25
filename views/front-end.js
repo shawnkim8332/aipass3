@@ -31,8 +31,12 @@ frontApp.controller('userCtrl', function($scope) {
     $scope.user = localStorage.getItem("name");
 });
 
+frontApp.config(function($httpProvider){
+    delete $httpProvider.defaults.headers.common['X-Requested-With'];
+});
+
 frontApp.controller('indexFrontController', ['$scope', '$http', '$location', '$window',function($scope, $http, $location, $window){
-	
+
 
 }]);
 
@@ -55,7 +59,7 @@ frontApp.controller('signUpController', ['$scope', '$http', '$location', '$windo
 			headers: {'Content-Type': 'application/json'}
 		}).then(function (response) {
 			if(response.data == "dupEmail") {
-				$scope.myTxt = "Username with same email address Exists!";
+				$scope.myTxt = "Username with same email address Exists Please signup with different email address!";
 			}
 			else {
 				$scope.myTxt = "Thank You For Registration!";
