@@ -7,6 +7,9 @@ nav ul {
 	padding:20px 0;
 	border-bottom:1px solid #000;
 }
+body {
+	background-color: rgba(211, 211, 211, 0.22);
+}
 header {
 	text-align:center;
 }
