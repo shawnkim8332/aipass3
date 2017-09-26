@@ -1,0 +1,30 @@
+{
+  "name": "aipass3",
+  "version": "1.0.0",
+  "description": "aip assignment3",
+  "main": "Server.js",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
+    "ejs": "^2.5.7",
+    "express": "^4.15.5",
+    "jsonwebtoken": "^8.0.1",
+    "mysql": "^2.14.1",
+    "unirest": "^0.5.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://shawnkim8332@github.com/shawnkim8332/aipass3.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shawnkim8332/aipass3/issues"
+  },
+  "homepage": "https://github.com/shawnkim8332/aipass3#readme"
+}
