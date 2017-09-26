@@ -11,28 +11,28 @@ router.post("/register",function(req,res){
     console.log(req.body);
 	var user = req.body;
 	getConnection(function (err, con) {
-		console.log("register Called");
-		if (err) throw err;
+        if (err) throw err;
 
-		var sql = "Insert into users (first_name,last_name,role,email,password,created,modified) values ?";
-		//encrypting password
-		var cipher = crypto.createCipher(algorithm,password);
-		var encPass = cipher.update(user.password,'utf8','hex')
-		encPass += cipher.final('hex');
-		//converting date to timestamp
-		var now=new Date().toISOString().slice(0, 19).replace('T', ' ');
-		//adding user values
-		var values = [[user.name,user.lastname,'customer',user.email,encPass,now,now]];
+        var sql = "select id from users where email = ?";
+        //adding email value
+        var value = [user.email];
 
-		con.query(sql, [values], function (err, rows, fields) {
-			if (err){
-				console.log('Error while adding user: '+err);
-				return res.send(err);
+        con.query(sql, value, function (err, rows, fields) {
+            if (err){
+                console.log('Error while finding user: '+err);
+                return res.send("Error");
+            }
+			else if(!rows.length) {
+				console.log('No User Found during Signup');
+				//start adding user to database
+				addUser(user);
+			} 
+			else {
+				console.log("Error user already exists");
+				return res.send("dupEmail");
 			}
-			console.log('user added');
 			con.release();
-			return res.json(rows);
-		});
+        });
 	}); // end getConnection
 });
 
@@ -118,30 +118,31 @@ router.post("/auth",function(req,res){
 	  }
 });
 
-//check if email already exists on database
-function checkEmailExists(email) {
+//Add User if no Email Found
+function addUser(user) {
 	getConnection(function (err, con) {
-        if (err) throw err;
+		console.log("register Called");
+		if (err) throw err;
 
-        var sql = "select id from users where email = ?";
-        //adding email value
-        var value = [email];
+		var sql = "Insert into users (first_name,last_name,role,email,password,created,modified) values ?";
+		//encrypting password
+		var cipher = crypto.createCipher(algorithm,password);
+		var encPass = cipher.update(user.password,'utf8','hex')
+		encPass += cipher.final('hex');
+		//converting date to timestamp
+		var now=new Date().toISOString().slice(0, 19).replace('T', ' ');
+		//adding user values
+		var values = [[user.name,user.lastname,'customer',user.email,encPass,now,now]];
 
-        con.query(sql, value, function (err, rows, fields) {
-            if (err){
-                console.log('Error while finding user: '+err);
-                return res.send("Error");
-            }
-			else if(!rows.length) {
-				console.log('No User Found during Signup');
-				return 1;
-			} 
-			else {
-				console.log("Error user already exists");
-				return 0;
+		con.query(sql, [values], function (err, rows, fields) {
+			if (err){
+				console.log('Error while adding user: '+err);
+				return res.send(err);
 			}
+			console.log('user added');
 			con.release();
-        });
+			return res.json(rows);
+		});
 	}); // end getConnection
 }
 
