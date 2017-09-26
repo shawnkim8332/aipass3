@@ -1,15 +1,3 @@
-<!DOCTYPE html>
-<html lang="en" ng-app="adminProduct">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
-        <script type="text/javascript" src="/admin/admin.js"></script>
-        <title>Product Detail</title>
-    </head>
-    <body  ng-controller="ProductDetailController as prodDetailCtrl">
         <div id="divMain"  class="w3-container">
             <form name="productUpdateForm"  ng-submit="productUpdateForm.$valid && updateProduct()" novalidate>
                 <div class="w3-container"  style="padding:3px;width:80%;">
@@ -33,5 +21,3 @@
                 </div><!-- End div.w3-container -->
             </form>
         </div><!-- END div#divMain -->
-    </body>
-</html>

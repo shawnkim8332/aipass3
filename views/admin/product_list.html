@@ -1,33 +1,19 @@
-<!DOCTYPE html>
-<html lang="en" ng-app="adminProduct">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
-        <script type="text/javascript" src="/admin/admin.js"></script>
-        <title>Product List</title>
-    </head>
-    <body>
-        <div id="divMain"  class="w3-container">
-            <div class="w3-container">
-                <h2>Product List</h2>
-            </div><!-- END div.w3-container -->
-            <div class="w3-container"  style="padding:3px;width:80%;" ng-controller = "ProductListController as prodListCtrl">
-                <table class="w3-table-all">
-                    <tr class="w3-dark-grey w3-center">
-                        <th>Product Id</th>
-                        <th>Product Name</th>
-                        <th>Description</th>
-                    </tr>
-                    <tr ng-repeat = "product in products" ng-click="goProductDetail(product)">
-                        <td>{{ product.product_id }}</td>
-                        <td>{{ product.product_nm }}</td>
-                        <td>{{ product.description }}</td>
-                    </tr>
-                </table>
-            </div><!-- END div.w3-container -->
-        </div><!-- END div#divMain -->
-    </body>
-</html>	
+<div id="divMain"  class="w3-container">
+    <div class="w3-container">
+        <h2>Product List</h2>
+    </div><!-- END div.w3-container -->
+    <div class="w3-container"  style="padding:3px;width:80%;">
+        <table class="w3-table-all">
+            <tr class="w3-dark-grey w3-center">
+                <th>Product Id</th>
+                <th>Product Name</th>
+                <th>Description</th>
+            </tr>
+            <tr ng-repeat = "product in products" ng-click="goProductDetail(product)">
+                <td>{{ product.product_id }}</td>
+                <td>{{ product.product_nm }}</td>
+                <td>{{ product.description }}</td>
+            </tr>
+        </table>
+    </div><!-- END div.w3-container -->
+</div><!-- END div#divMain -->

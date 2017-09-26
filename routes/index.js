@@ -42,7 +42,7 @@ router.all('/', function(req, res, next){
 
 
 router.all('/admin', function(req, res, next){
-	 res.render('admin/product_list.html');
+//	 res.render('admin/product_list.html');
 });
 
 router.all('/food', function(req, res, next){
