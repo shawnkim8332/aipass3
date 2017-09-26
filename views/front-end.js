@@ -1,6 +1,6 @@
 (function(){
 //Define App
-var frontApp = angular.module('front-end', ['ngRoute']);
+var frontApp = angular.module('frontApp', ['ngRoute']);
 //Define Config
 frontApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 	$routeProvider
@@ -16,6 +16,10 @@ frontApp.config(['$routeProvider', '$locationProvider', function($routeProvider,
 			templateUrl : 'home.html',
 			controller: 'logOutController'
 		})
+        .when("/food", {
+            templateUrl : 'food/menu_item.html',
+            controller: 'menuItemListController'
+        })
 		.when("/login", {
 			templateUrl : 'login.html',
 			controller: 'loginController'

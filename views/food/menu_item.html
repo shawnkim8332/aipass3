@@ -1,0 +1,50 @@
+        <div id="divMain"  class="w3-container">
+            <div class="w3-container"   style="padding:3px;width:80%;">
+                <div class="w3-container">
+                    <h2>Menu Item Search</h2>
+                </div><!-- END div.w3-container -->
+                <form name="menuSearchForm"  ng-submit="menuSearchForm.$valid && searchMenu()" novalidate >
+                    <div  class="w3-container w3-card-4 w3-light-grey">
+                        <p>
+                            <label  class="w3-text-green">Search Query</label>
+                        </p>
+                        <p>
+                            <input ng-model="inputQuery"class="w3-input_nowidth w3-border" style="width:90%" required/>
+                        </p>
+                        <p>
+                            <input type="submit" value="Search" class="w3-button w3-green">
+                        </p>
+                        <p></p>
+                        <p></p>
+                        <p></p>
+                    </div>
+                </form>
+            </div><!-- END div.w3-container -->
+            <div ng-hide="divList" class="w3-container"  style="padding:3px;width:80%;">
+                <div class="w3-container">
+                    <h2>Menu Item List</h2>
+                </div><!-- END div.w3-container -->
+                <p class="w3-right">Total Menu Items: {{totalMenuItems}}</p>
+                <table class="w3-table-all">
+                    <tr class="w3-dark-grey w3-center">
+                        <th>Title</th>
+                        <th>Restaurant Chain</th>
+                        <th>Serving Size</th>
+                        <th>Image</th>
+                    </tr>
+                    <tr ng-repeat = "item in items" ng-click="goProductDetail(product)">
+                        <td>{{ item.title }}</td>
+                        <td>{{ item.restaurantChain }}</td>
+                        <td>{{ item.servingSize }}</td>
+                        <td><img src="{{ item.image }}" class="img-thumbnail" alt="Menu Image" width="150" height="150"></td>
+                    </tr>
+                </table>
+                <div  class="w3-container w3-center"  style="padding:3px;width:100%;">
+                    <p>
+                        <input type="button" value="<< Previous" class="w3-button w3-green w3-left" ng-click="goToPage('-1')">
+                        {{currentpage}}/{{lastpage}}
+                        <input type="button" value="Next >>" class="w3-button w3-green w3-right"  ng-click="goToPage('1')">
+                    </p>
+                </div><!-- End div.w3-container -->
+            </div><!-- END div.w3-container -->
+        </div><!-- END div#divMain -->

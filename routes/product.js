@@ -117,4 +117,24 @@ router.get("/ingredient/:id",function(req,res){
     });
 });
 
+
+router.get("/product/list",function(req,res){
+    getConnection(function (err, con) {
+        if (err) throw err;
+        var sql = "SELECT product_id,";
+        sql += " product_nm,";
+        sql += " description";
+        sql += " FROM product as p";
+
+        con.query(sql, function (err, rows, fields) {
+            if (err){
+                console.log('Error while retrieving product list data1');
+                con.release();
+                return res.send(err);
+            }
+            return res.json(rows);
+        });
+    });
+});
+
 module.exports = router;

@@ -5,7 +5,8 @@ var path = require('path');
 var bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
 var index = require('./routes/index');
-var product = require('./routes/product');
+var admin = require('./routes/product');
+var food = require('./routes/food');
 var user = require('./routes/user');
 var app = express();
 
@@ -39,7 +40,8 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use('/', index);
-app.use('/api', product);
+app.use('/api/admin', admin);
+app.use('/api/food', food);
 app.use('/user', user);
 
 //Cors Setup For App
