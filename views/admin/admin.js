@@ -37,16 +37,24 @@
     }]);
 
 angular.module('frontApp')
-    .controller('ProductDetailController', ['$scope', '$http', '$location', '$window', '$routeParams', function($scope, $http, $location, $window, $routeParams){
+    .controller('ProductDetailController', ['$scope', '$http', '$location', '$window', '$routeParams', 'AuthService', function($scope, $http, $location, $window, $routeParams, AuthService){
 
-        var product_id=$routeParams.id;
+        var promise = AuthService.authLogin();
+        promise.then(function(isAuth) {
+            if(isAuth == 'Success'){
+                var product_id=$routeParams.id;
 
-        $http.get('/api/admin/product/'+product_id)
-            .then(function(response) {
-                this.products = response.data;
-                $scope.inputPrdNm = this.products[0].product_nm;
-                $scope.inputPrdDesc = this.products[0].description;
-            });
+                $http.get('/api/admin/product/'+product_id)
+                    .then(function(response) {
+                        this.products = response.data;
+                        $scope.inputPrdNm = this.products[0].product_nm;
+                        $scope.inputPrdDesc = this.products[0].description;
+                    });
+            }else{
+                alert("Please login with Admin account again");
+                $location.path("/");
+            }
+        });
 
         $scope.goToProductList = function (){
             $location.path('/admin/product');
