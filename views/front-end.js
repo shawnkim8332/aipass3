@@ -32,7 +32,9 @@ frontApp.config(['$routeProvider', '$locationProvider', function($routeProvider,
 		.when("/login", {
 			templateUrl : 'login.html',
 			controller: 'loginController'
-		});
+		})
+        .otherwise({redirectTo:'/'});
+
 	$locationProvider.html5Mode({
 		enabled: true
 	});

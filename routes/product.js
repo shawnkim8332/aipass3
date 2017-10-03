@@ -4,7 +4,7 @@ var mysql = require('mysql');
 var getConnection = require('./db');
 
 //Retrieving product list from database
-router.get("/list",function(req,res){
+router.get("/product/list",function(req,res){
     getConnection(function (err, con) {
         if (err) throw err;
         var sql = "SELECT product_id,";
@@ -50,7 +50,7 @@ router.get("/product/:id",function(req,res){
 });
 
 //Updating product data
-router.post('/product/update/:id', function(req, res, next){
+router.post('/product/:id', function(req, res, next){
     // getting input data
     var product = req.body;
 

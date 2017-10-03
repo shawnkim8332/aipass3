@@ -17,35 +17,31 @@
     });
 
     angular.module('frontApp')
-    .controller('ProductListController', ['$scope', '$http', '$window', 'AuthService', function($scope, $http, $window, AuthService){
+    .controller('ProductListController', ['$scope', '$http', '$window', 'AuthService', '$location', function($scope, $http, $window, AuthService, $location){
 
         var promise = AuthService.authLogin();
         promise.then(function(isAuth) {
             if(isAuth == 'Success'){
-                $http.get('/api/admin/list')
+                $http.get('/api/admin/product/list')
                     .then(function(response) {
                         $scope.products = response.data;
                     });
             }else{
                 alert("Please login with Admin account again");
-                $window.location.href = ("/");
+                $location.path("/");
             }
         });
         $scope.goProductDetail = function (product){
-            console.log(product.product_id);
-            $window.location.href = ("/admin/product/"+product.product_id);
-            //$window.location.href = ("/admin/product_detail.html?id="+product.product_id);
-            // $window.location.href = ("/admin/detail?id="+product.product_id);
+            $location.path('/admin/product/'+product.product_id);
         }
     }]);
 
 angular.module('frontApp')
     .controller('ProductDetailController', ['$scope', '$http', '$location', '$window', '$routeParams', function($scope, $http, $location, $window, $routeParams){
-        var app = this;
-         var product_id="1";
-         console.log($routeParams.id);
-        //var product_id=($location.search())['id'];
-        $http.get('/api/admin/'+product_id)
+
+        var product_id=$routeParams.id;
+
+        $http.get('/api/admin/product/'+product_id)
             .then(function(response) {
                 this.products = response.data;
                 $scope.inputPrdNm = this.products[0].product_nm;
@@ -53,7 +49,7 @@ angular.module('frontApp')
             });
 
         $scope.goToProductList = function (){
-            $window.location.href = ("/admin");
+            $location.path('/admin/product');
         }
 
         $scope.updateProduct = function() {
@@ -62,7 +58,7 @@ angular.module('frontApp')
                 product_nm: $scope.inputPrdNm,
                 description : $scope.inputPrdDesc
             }
-            var url = '/api/product/update/'+product_id;
+            var url = '/api/admin/product/'+product_id;
 
             $http({
                 url: url, // No need of IP address
@@ -71,7 +67,7 @@ angular.module('frontApp')
                 headers: {'Content-Type': 'application/json'}
             }).then(function (response) {
                 alert("Successfully updated");
-                $window.location.reload();
+                $location.path('/admin/product');
             })
                 .catch(function (err) {});
         };
