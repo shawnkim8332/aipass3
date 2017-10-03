@@ -1,0 +1,24 @@
+<div id="divMain">
+	<div class="w3-container">
+		 <!--  Products Container  -->
+        <div class="list-group" style="width: 100%" ng-controller = "productFrontListController as prodFrontListCtrl">
+            <!--  Product Container  -->
+            <div class="list-group-item col-md-4" ng-repeat="fproduct in forntproducts">
+                <!-- $index Practice:  -->
+                <h3>{{fproduct.product_nm | uppercase}}<em class="pull-right">{{fproduct.price | currency}}</em>
+                </h3>
+    
+                <!-- Image Gallery  -->
+                <div ng-show="fproduct.image_path.length">
+                    <div class="img-wrap">
+                        <img ng-src="{{fproduct.image_path}}" class="img-thumbnail center-block" />
+                    </div>
+                </div>
+    
+                <!-- Product Description  -->
+               	<p>{{fproduct.description}}</p>
+    
+            </div>
+        </div>  
+    </div>
+</div>

@@ -20,6 +20,10 @@ frontApp.config(['$routeProvider', '$locationProvider', function($routeProvider,
             templateUrl : 'food/menu_item.html',
             controller: 'menuItemListController'
         })
+		.when("/products", {
+            templateUrl : 'products.html',
+            controller: 'productFrontListController'
+        })
         .when("/admin", {
             templateUrl : 'admin/product_list.html',
             controller: 'ProductListController'
@@ -122,6 +126,15 @@ frontApp.controller('logOutController', ['$scope', '$http', '$location', '$windo
 	localStorage.setItem("name", '');
 	alert("You have Logged Out Successfully");
 	$window.location.href = ("/");
+}]);
+
+frontApp.controller('productFrontListController', ['$scope', '$http', '$location', '$window',function($scope, $http, $location, $window){
+	console.log("p-called");
+	 $http.get('/api/front/list')
+		.then(function(response) {
+			console.log(response);
+			$scope.forntproducts = response.data;
+		});
 }]);
 
 })();

@@ -45,4 +45,4 @@ angular.module('frontApp')
                 $scope.getMenuItem(newOffset);
             }
         }
-    }]);
+	}]);

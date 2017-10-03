@@ -9,6 +9,8 @@ router.get("/list",function(req,res){
         if (err) throw err;
         var sql = "SELECT product_id,";
         sql += " product_nm,";
+		sql += " price,";
+		sql += " image_path,";
         sql += " description";
         sql += " FROM product as p";
 
