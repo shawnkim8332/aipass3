@@ -12,7 +12,7 @@ var user = require('./routes/user');
 var app = express();
 
 //Server Ports
-var port = 3000;
+var port = 4000;
 
 //View Engine
 app.set('views', path.join(__dirname, 'views'));

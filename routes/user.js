@@ -46,7 +46,7 @@ router.post("/login",function(req,res){
 	getConnection(function (err, con) {
         if (err) throw err;
 
-        var sql = "select id,first_name,role,password from users where email = ?";
+			var sql = "select id,first_name,role,password from users where email = ?";
 		//encrypting password
 		var cipher = crypto.createCipher(algorithm,password);
 		var encPass = cipher.update(user.password,'utf8','hex')
@@ -88,9 +88,10 @@ router.post("/login",function(req,res){
 	}); // end getConnection
 });
 
-//User Auth Function
+//User Auth Function --old
+/*
 router.post("/auth",function(req,res){
-	console.log("Austh Called");
+	console.log("Auth Called");
     console.log(req.body);
 	var token = req.body.token || req.query.token || req.headers['x-access-token'];
 	  // decode token
@@ -116,6 +117,33 @@ router.post("/auth",function(req,res){
 	  else {
 		return "error";
 	  }
+});
+*/
+
+router.get("/auth/:token",function(req,res){
+	var token = [req.params.token].toString();
+    // decode token
+    if (token) {
+        // verifies secret and checks exp
+        jwt.verify(token, 'userLogin', function(err, decoded) {
+            if (err) {
+                console.log(err);
+                return res.json({ success: false, message: 'Failed to authenticate token.' });
+            }
+            else {
+                // if everything is good, save to request for use in other routes
+                if(decoded.scope == 'admin') {
+                    return res.send('Success');
+                }
+                else {
+                    return res.send('Fail');
+                }
+            }
+        });
+    }
+    else {
+        return "error";
+    }
 });
 
 //Add User if no Email Found
