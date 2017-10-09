@@ -5,7 +5,7 @@ var mysql = require('mysql');
 var getConnection = require('./db');
 var jwt = require('jsonwebtoken');
 var crypto = require('crypto'),algorithm = 'aes-256-ctr',password = 'd6F3Efeq';
-var ses = require('node-ses'), client = ses.createClient({ key: 'AKIAJZ43GIIW7FF2YDMQ', secret: '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' });
+var ses = require('node-ses'), client = ses.createClient({ key: 'Call me for key', secret: 'call me for secrect' });
 
 //User Register Function
 router.post("/register",function(req,res){
@@ -27,6 +27,7 @@ router.post("/register",function(req,res){
 				console.log('No User Found during Signup');
 				//start adding user to database
 				addUser(user);
+				return res.send("success");
 			} 
 			else {
 				console.log("Error user already exists");
@@ -274,11 +275,11 @@ function addUser(user) {
 		con.query(sql, [values], function (err, rows, fields) {
 			if (err){
 				console.log('Error while adding user: '+err);
-				return res.send(err);
+				//return res.send(err);
 			}
 			console.log('user added');
 			con.release();
-			return res.json(rows);
+			//return res.json(rows);
 		});
 	}); // end getConnection
 }

@@ -10,6 +10,7 @@
     "express": "^4.15.5",
     "jsonwebtoken": "^8.0.1",
     "mysql": "^2.14.1",
+    "node-ses": "^2.0.5",
     "unirest": "^0.5.1"
   },
   "devDependencies": {},
