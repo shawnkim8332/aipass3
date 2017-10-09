@@ -5,6 +5,7 @@ var mysql = require('mysql');
 var getConnection = require('./db');
 var jwt = require('jsonwebtoken');
 var crypto = require('crypto'),algorithm = 'aes-256-ctr',password = 'd6F3Efeq';
+var ses = require('node-ses'), client = ses.createClient({ key: 'AKIAJZ43GIIW7FF2YDMQ', secret: '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' });
 
 //User Register Function
 router.post("/register",function(req,res){
@@ -145,6 +146,114 @@ router.get("/auth/:token",function(req,res){
         return "error";
     }
 });
+
+//User Password Reset checks Function
+router.post("/reset",function(req,res){
+    console.log(req.body);
+	var user = req.body;
+	getConnection(function (err, con) {
+        if (err) throw err;
+
+        var sql = "select * from users where email = ?";
+        //adding email value
+        var value = [user.email];
+
+        con.query(sql, value, function (err, rows, fields) {
+            if (err){
+                console.log('Error while finding user: '+err);
+                return res.send("Error");
+            }
+			else if(!rows.length) {
+				console.log('No User Found in the databse password reset');
+				return res.send("notFound");
+			} 
+			else {
+				console.log("Calling Send Email Function");
+				//call send email functiom
+				sendEmail(rows[0].first_name, rows[0].email);
+				return res.send("success");
+			}
+			con.release();
+        });
+	}); // end getConnection
+});
+
+//generate and send token via email to reset the password.
+function sendEmail(name,email) {
+	console.log("names is:"+name);
+	console.log("email is:"+email);
+	var tokenData = {
+		email: email,
+		secret : 'aipEmailPasswordResetChecks',
+	};
+	var resetToken = jwt.sign(tokenData, 'userPassReset');
+	console.log("token is:"+resetToken);
+	msg = "Hi "+name+"<br/>";
+	msg += "A Passowrd Rest request is made on Hello Fresh Webiste<br><br>Please click on following link to reset your password<br><br>";
+	msg += "<a href='http://aip2017.webon.com.au/email-reset?resVal="+resetToken+"'>http://aip2017.webon.com.au/email-reset?resVal="+resetToken+"</a><br/><br/>";
+	msg +="Please Neglect this email if request is not made by you <br/><br/>Many Thanks<br/>Hello Fresh<br/>UTS AIP 2017 Group";
+	client.sendEmail({
+		   to: email,
+		   from: 'vatshpatel@gmail.com',
+		   cc: 'vatshpatel@gmail.com',
+    	   subject: 'Password Reset Request On Hello Fresh',
+   	       message: msg,
+		   altText: 'plain text'
+		}, function (err, data, res) {
+			 if (err){
+				console.log('Error while Sending email: ',err);
+			 }
+	});
+}
+
+//verify token and update password in database
+router.post("/updatepass",function(req,res){
+	var data = req.body;
+	var token = data.token;
+	console.log("Token Got is:"+token);
+	if (token) {
+        // verifies secret and checks exp
+        jwt.verify(token, 'userPassReset', function(err, decoded) {
+            if (err) {
+                console.log(err);
+                return res.json({ success: false, message: 'Failed to authenticate token.' });
+            }
+            else {
+                if(decoded.secret == 'aipEmailPasswordResetChecks') {
+					//valid token
+					console.log("decoded reset email :"+decoded.email);
+					//encrypting password
+					var cipher = crypto.createCipher(algorithm,password);
+					var encPass = cipher.update(data.password,'utf8','hex')
+					encPass += cipher.final('hex');
+					updatePassword(decoded.email,encPass);
+                    return res.send('Success');
+                }
+                else {
+					//invalid token
+                    return res.send('error');
+                }
+            }
+        });
+    }
+    else {
+        return "error";
+    } 
+});
+
+//update password to database to reset the password
+function updatePassword(email,password) {
+	getConnection(function (err, con) {
+        if (err) throw err;
+        var sql = "UPDATE users set password = ? where email = ?";
+        //binding input data into update sql
+        var values = [password, email];
+        con.query(sql, values, function (err, result) {
+            if (err) throw err;
+            console.log(result.affectedRows + " user record updated");
+        });
+    });
+}
 
 //Add User if no Email Found
 function addUser(user) {

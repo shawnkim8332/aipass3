@@ -16,19 +16,19 @@ frontApp.config(['$routeProvider', '$locationProvider', function($routeProvider,
 			templateUrl : 'home.html',
 			controller: 'logOutController'
 		})
+		.when("/password-reset", {
+			templateUrl : 'reset.html',
+			controller: 'resetController'
+		})
+		.when("/email-reset", {
+			templateUrl : 'resetpass.html',
+			controller: 'resetEmailController'
+		})
         .when("/food", {
             templateUrl : 'food/menu_item.html',
             controller: 'menuItemListController'
         })
-<<<<<<< HEAD
-		.when("/products", {
-            templateUrl : 'products.html',
-            controller: 'productFrontListController'
-        })
-        .when("/admin", {
-=======
         .when("/admin/product", {
->>>>>>> 396035f2d2e4bdc3e536976efb475872ade99050
             templateUrl : 'admin/product_list.html',
             controller: 'ProductListController'
         })
@@ -137,13 +137,79 @@ frontApp.controller('logOutController', ['$scope', '$http', '$location', '$windo
 	$window.location.href = ("/");
 }]);
 
-frontApp.controller('productFrontListController', ['$scope', '$http', '$location', '$window',function($scope, $http, $location, $window){
-	console.log("p-called");
-	 $http.get('/api/front/list')
-		.then(function(response) {
-			console.log(response);
-			$scope.forntproducts = response.data;
-		});
+frontApp.controller('resetController', ['$scope', '$http', '$location', '$window',function($scope, $http, $location, $window){
+	$scope.resetTxt = "You have not yet clicked submit";
+    $scope.resetPass = function () {
+		console.log("Submit");
+		var data = {
+               	email : $scope.inputResetEmail,
+            }
+		var url = '/user/reset';
+		$http({
+			url: url, // No need of IP address
+			method: 'POST',
+			data: data,
+			headers: {'Content-Type': 'application/json'}
+		}).then(function (response) {
+			console.log("res: ",response);
+			if(response.data == "notFound") {
+				$scope.resetTxt = "No Such Email Found In DB!";
+			} 
+			else {
+				$scope.resetTxt = "Please Check Your Email Address To get your password reset link";
+			}
+		})
+		 .catch(function (err) {});
+    }
 }]);
+
+frontApp.controller('resetEmailController', ['$scope', '$http', '$location', '$window',function($scope, $http, $location, $window){
+	$scope.resetEmailTxt = "You have not yet clicked submit";
+    $scope.resetPassEmail = function () {
+		var token = $location.search().resVal; 
+		console.log("Token: "+token);
+		var data = {
+				token: token,
+               	password : $scope.newPassword,
+           }
+		var url = '/user/updatepass';
+		
+		$http({
+			url: url, // No need of IP address
+			method: 'POST',
+			data: data,
+			headers: {'Content-Type': 'application/json'}
+		}).then(function (response) {
+			console.log("res: ",response);
+			if(response.data == "error") {
+				$scope.resetEmailTxt = "Error Updating the password in DB";
+			} 
+			else {
+				$scope.resetEmailTxt = "Yay!!! Password Updated!";
+			}
+		})
+		 .catch(function (err) {}); 
+    }
+}]);
+
+
+/* Directives */
+/*
+frontApp.module(['frontApp.directives']);
+angular.module('frontApp.directives', [])
+    .directive('pwCheck', [function () {
+    return {
+        require: 'ngModel',
+        link: function (scope, elem, attrs, ctrl) {
+            var firstPassword = '#' + attrs.pwCheck;
+            elem.add(firstPassword).on('keyup', function () {
+                scope.$apply(function () {
+                    // console.info(elem.val() === $(firstPassword).val());
+                    ctrl.$setValidity('pwmatch', elem.val() === $(firstPassword).val());
+                });
+            });
+        }
+    }
+}]); */
 
 })();

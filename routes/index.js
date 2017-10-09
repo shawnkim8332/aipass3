@@ -1,7 +1,7 @@
 var express = require('express');
 var jwt = require('jsonwebtoken');
 var router = express.Router();
-
+/*
 // route middleware to verify a token
 router.all('*',function(req, res, next) {
 		  // check header or url parameters or post parameters for token
@@ -35,6 +35,7 @@ router.all('*',function(req, res, next) {
 	  }
 
 });
+*/
 
 router.all('/', function(req, res, next){
     res.render('index.html');

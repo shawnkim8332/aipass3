@@ -1,0 +1,11 @@
+<div id="mainBody">
+	<h2>Please Type New Password:</h2>
+    <form name="resetEmailForm" ng-submit="resetPassEmail()">
+       <input type="password" name="password1" ng-model="newPassword" placeholder="Please Type New Password"/><br/>
+       <input type="password" name="password2" pw-check="password1" ng-model="newPassword1" placeholder="Please Re-Type New Password"/><br/>
+       <input type="submit" class="w3-button w3-green w3-center">
+    </form>
+    <div class="msg-block" ng-show="resetEmailForm.$error"> <span class="msg-error" ng-show="resetEmailForm.newPassword1.$error.pwmatch">Passwords don't match.</span> 
+            </div>
+    <p>{{resetEmailTxt}}</p>
+</div>
