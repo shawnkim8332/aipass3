@@ -33,3 +33,11 @@ header a {
 	width:50%;
 	outline:none;
 }
+.list-group-item{
+  float: left;
+  width: 360px;
+  margin: 5px;
+}
+.pull-right{
+	float: right;
+}

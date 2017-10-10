@@ -28,6 +28,10 @@ frontApp.config(['$routeProvider', '$locationProvider', function($routeProvider,
             templateUrl : 'food/menu_item.html',
             controller: 'menuItemListController'
         })
+		.when("/product", {
+            templateUrl : 'product/productitem.html',
+            controller: 'ProductController'
+        })
         .when("/admin/product", {
             templateUrl : 'admin/product_list.html',
             controller: 'ProductListController'
