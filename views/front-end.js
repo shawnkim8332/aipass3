@@ -36,6 +36,10 @@ frontApp.config(['$routeProvider', '$locationProvider', function($routeProvider,
             templateUrl : 'admin/product_list.html',
             controller: 'ProductListController'
         })
+	    .when("/Cart", {
+            templateUrl : 'Cart/shoplist.html',
+            controller: 'shoplistcontroller'
+        })
         .when("/admin/product/:id", {
             //templateUrl: function(params){ return 'admin/product_detail.html' + params.id; },
             templateUrl : 'admin/product_detail.html',
