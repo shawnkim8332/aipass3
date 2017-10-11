@@ -5,7 +5,7 @@ var mysql = require('mysql');
 var getConnection = require('./db');
 var jwt = require('jsonwebtoken');
 var crypto = require('crypto'),algorithm = 'aes-256-ctr',password = 'd6F3Efeq';
-var ses = require('node-ses'), client = ses.createClient({ key: 'Call me for key', secret: 'call me for secrect' });
+var ses = require('node-ses'), client = ses.createClient({ key: 'AKIAJDKFPCWN5YGCAEHA', secret: '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' });
 
 //User Register Function
 router.post("/register",function(req,res){
