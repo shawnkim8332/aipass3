@@ -1,7 +1,11 @@
-angular.module('frontApp')
-.controller('ProductController',function(){
+//angular.module('frontApp')
+//.controller('ProductController',function(){
+//	this.products=boxs;
+//});
+
+angular.module('frontApp').controller('ProductController', ['$scope', '$http', '$location', '$window',function($scope, $http, $location, $window){
 	this.products=boxs;
-});
+}]);
 
 var boxs=[
 	{

@@ -1,27 +1,27 @@
 (function(){
 //Define App
-var frontApp = angular.module('frontApp', ['ngRoute']);
+var frontApp = angular.module('frontApp', ['ngRoute','ngResource']);
 //Define Config
 frontApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 	$routeProvider
 		.when("/", {
-			templateUrl : 'home.html',
+			templateUrl : 'home/home.html',
 			controller: 'indexFrontController'
 		})
 		.when("/signup", {
-			templateUrl : 'signup.html',
+			templateUrl : 'user/signup.html',
 			controller: 'signUpController'
 		})
 		.when("/logout", {
-			templateUrl : 'home.html',
+			templateUrl : 'home/home.html',
 			controller: 'logOutController'
 		})
 		.when("/password-reset", {
-			templateUrl : 'reset.html',
+			templateUrl : 'user/reset.html',
 			controller: 'resetController'
 		})
 		.when("/email-reset", {
-			templateUrl : 'resetpass.html',
+			templateUrl : 'user/resetpass.html',
 			controller: 'resetEmailController'
 		})
         .when("/food", {
@@ -36,8 +36,8 @@ frontApp.config(['$routeProvider', '$locationProvider', function($routeProvider,
             templateUrl : 'admin/product_list.html',
             controller: 'ProductListController'
         })
-	    .when("/Cart", {
-            templateUrl : 'Cart/shoplist.html',
+	    .when("/cart", {
+            templateUrl : 'cart/shoplist.html',
             controller: 'shoplistcontroller'
         })
         .when("/admin/product/:id", {
@@ -46,7 +46,7 @@ frontApp.config(['$routeProvider', '$locationProvider', function($routeProvider,
             controller: 'ProductDetailController'
         })
 		.when("/login", {
-			templateUrl : 'login.html',
+			templateUrl : 'user/login.html',
 			controller: 'loginController'
 		})
         .otherwise({redirectTo:'/'});

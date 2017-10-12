@@ -6,18 +6,19 @@
 </httpProtocol>
 <html lang="en">
     <head>
+    	<base href="/">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
         <link rel="stylesheet" href="css/front-end.css">
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-resource.min.js"></script>
         <script type="text/javascript" src="./front-end.js"></script>
         <script type="text/javascript" src="./food/food-ctrl.js"></script>
         <script type="text/javascript" src="./admin/admin.js"></script>
         <script type="text/javascript" src="./product/product_controller.js"></script>
-        <script type="text/javascript" src="./Cart/shoplist_controller.js"></script>
-        <base href="/">
+        <script type="text/javascript" src="./cart/shoplist_controller.js"></script>
         <title>Hello Fresh</title>
     </head>
     <body ng-app="frontApp">
@@ -37,7 +38,7 @@
             	<ul>
                 	<li><a href="/">Home</a></li>
                     <li><a href="/product">Products</a></li>
-                    <li><a href="/Cart">Cart</a></li>
+                    <li><a href="/cart">Cart</a></li>
                      <li><a href="/food">Food Menu Api</a></li>
                     <li><a href="/admin/product">Admin</a></li>
                 </ul>

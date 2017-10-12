@@ -71,6 +71,7 @@ router.post('/product/:id', function(req, res, next){
 });
 
 //Retrieving flavor data
+/*
 router.get("/flavor/:id",function(req,res){
     getConnection(function (err, con) {
         if (err) throw err;
@@ -89,8 +90,10 @@ router.get("/flavor/:id",function(req,res){
         });
     });
 });
+*/
 
 //Retrieving ingredient data
+/*
 router.get("/ingredient/:id",function(req,res){
     getConnection(function (err, con) {
         if (err) throw err;
@@ -116,7 +119,7 @@ router.get("/ingredient/:id",function(req,res){
         });
     });
 });
-
+*/
 
 router.get("/product/list",function(req,res){
     getConnection(function (err, con) {
