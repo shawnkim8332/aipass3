@@ -5,7 +5,7 @@ var mysql = require('mysql');
 var getConnection = require('./db');
 var jwt = require('jsonwebtoken');
 var crypto = require('crypto'),algorithm = 'aes-256-ctr',password = 'd6F3Efeq';
-var ses = require('node-ses'), client = ses.createClient({ key: 'AKIAJDKFPCWN5YGCAEHA', secret: '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' });
+var ses = require('node-ses'), client = ses.createClient({ key: '---', secret: '---' });
 
 //User Register Function
 router.post("/register",function(req,res){
@@ -48,7 +48,7 @@ router.post("/login",function(req,res){
 	getConnection(function (err, con) {
         if (err) throw err;
 
-			var sql = "select id,first_name,role,password from users where email = ?";
+		var sql = "select id,first_name,role,password from users where email = ?";
 		//encrypting password
 		var cipher = crypto.createCipher(algorithm,password);
 		var encPass = cipher.update(user.password,'utf8','hex')
@@ -77,7 +77,8 @@ router.post("/login",function(req,res){
 					return res.json({
 						success: 'true',
 						name: rows[0].first_name,
-						token: token
+						token: token,
+						email: user.email
 					});
 				}
 				else {
@@ -89,38 +90,6 @@ router.post("/login",function(req,res){
         });
 	}); // end getConnection
 });
-
-//User Auth Function --old
-/*
-router.post("/auth",function(req,res){
-	console.log("Auth Called");
-    console.log(req.body);
-	var token = req.body.token || req.query.token || req.headers['x-access-token'];
-	  // decode token
-	  if (token) {
-		// verifies secret and checks exp
-		jwt.verify(token, 'userLogin', function(err, decoded) {      
-		  if (err) {
-			console.log(err);
-			return res.json({ success: false, message: 'Failed to authenticate token.' });
-		  } 
-		  else {
-			// if everything is good, save to request for use in other routes
-			console.log("token Scope : ",decoded.scope);
-			if(decoded.scope == 'admin') {
-				return "Success";
-			}
-			else {
-				return "Log-In-As-Admin";
-			}
-		  }
-		});
-	  }
-	  else {
-		return "error";
-	  }
-});
-*/
 
 router.get("/auth/:token",function(req,res){
 	var token = [req.params.token].toString();
@@ -190,7 +159,7 @@ function sendEmail(name,email) {
 	var resetToken = jwt.sign(tokenData, 'userPassReset');
 	console.log("token is:"+resetToken);
 	msg = "Hi "+name+"<br/>";
-	msg += "A Passowrd Rest request is made on Hello Fresh Webiste<br><br>Please click on following link to reset your password<br><br>";
+	msg += "A Passowrd Reset request is made on Hello Fresh Webiste<br><br>Please click on following link to reset your password<br><br>";
 	msg += "<a href='http://aip2017.webon.com.au/email-reset?resVal="+resetToken+"'>http://aip2017.webon.com.au/email-reset?resVal="+resetToken+"</a><br/><br/>";
 	msg +="Please Neglect this email if request is not made by you <br/><br/>Many Thanks<br/>Hello Fresh<br/>UTS AIP 2017 Group";
 	client.sendEmail({
@@ -206,6 +175,37 @@ function sendEmail(name,email) {
 			 }
 	});
 }
+
+//send Product Bought email to user
+router.post("/confirmEmail",function(req,res){
+	var data = req.body;
+	var products = data.products;
+	console.log(data.products);
+	console.log(data.email);
+	var msg = "Hi, There<br/><br/>?";
+	msg+= "Thank You For Making a recent order on Hello Fresh<br/> Here is a summary of order made<br/>";
+	var i=1;
+	for(j in products) {
+		msg+= i+". "+products[j].name+" "+products[j].price+" <br/>";
+		i++;
+	}
+	msg +="<br/>Many Thanks<br/>Hello Fresh<br/>UTS AIP 2017 Group";
+	console.log(msg);
+	client.sendEmail({
+		   to: data.email,
+		   from: 'vatshpatel@gmail.com',
+		   cc: 'vatsh@macrison.com.au',
+    	   subject: 'new Order On Hello Fresh',
+   	       message: msg,
+		   altText: 'plain text'
+		}, function (err, data, res) {
+			 if (err){
+				console.log('Error while Sending email: ',err);
+				return res.send("error");
+			 }
+	});
+	return res.send("success");
+});
 
 //verify token and update password in database
 router.post("/updatepass",function(req,res){

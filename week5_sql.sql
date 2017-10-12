@@ -30,6 +30,19 @@ INDEX i_prod_id (product_id),
         ON DELETE CASCADE
 );
 
+CREATE TABLE aip_db.reviews (
+review_id INT(6)  UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+product_id INT(6) UNSIGNED,
+review_description VARCHAR(100) NOT NULL,
+review_stars INT(10) UNSIGNED,
+reg_date TIMESTAMP,
+modify_date TIMESTAMP,
+INDEX i_prod_id (product_id),
+    FOREIGN KEY (product_id)
+        REFERENCES aip_db.product(product_id)
+        ON DELETE CASCADE
+);
+
 CREATE TABLE aip_db.ingredient (
 ingred_id INT(6)  UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 ingred_nm VARCHAR(30) NOT NULL,

@@ -58,7 +58,7 @@ frontApp.config(['$routeProvider', '$locationProvider', function($routeProvider,
 }]);
 
 //Define Contorllers
-frontApp.controller('userCtrl', function($scope) {
+frontApp.controller('userCtrl', function($scope,$rootScope) {
     $scope.user = localStorage.getItem("name");
 });
 
@@ -93,8 +93,8 @@ frontApp.controller('signUpController', ['$scope', '$http', '$location', '$windo
 				$scope.myTxt = "Username with same email address Exists Please signup with different email address!";
 			}
 			else {
-				$scope.myTxt = "Thank You For Registration!";
-				$window.location.reload();
+				alert("Thank You For Registration!");
+				$window.location.href("/login");
 			}
 			
 		})
@@ -127,6 +127,7 @@ frontApp.controller('loginController', ['$scope', '$http', '$location', '$window
 				localStorage.setItem("token", response.data.token);
 				localStorage.setItem("name", response.data.name);
                 localStorage.setItem("role", response.data.role);
+				localStorage.setItem("email", response.data.email);
 				alert("Thank You For Logging In");
 				$window.location.href = ("/");
 			}
