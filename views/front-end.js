@@ -12,6 +12,10 @@ frontApp.config(['$routeProvider', '$locationProvider', function($routeProvider,
 			templateUrl : 'user/signup.html',
 			controller: 'signUpController'
 		})
+		.when("/myaccount", {
+			templateUrl : 'user/myaccount.html',
+			controller: 'myAccountController'
+		})
 		.when("/logout", {
 			templateUrl : 'home/home.html',
 			controller: 'logOutController'
@@ -199,6 +203,82 @@ frontApp.controller('resetEmailController', ['$scope', '$http', '$location', '$w
 		})
 		 .catch(function (err) {}); 
     }
+}]);
+
+frontApp.controller('myAccountController', ['$scope', '$http', '$location', '$window',function($scope, $http, $location, $window){
+	//check user token
+	var userToken = localStorage.getItem("token");
+	if(userToken) {
+		var data = {
+				token: userToken
+			}
+		var url = '/front/review/userReviewList';
+		$http({
+			url: url, // No need of IP address
+			method: 'POST',
+			data: data,
+			headers: {'Content-Type': 'application/json'}
+		}).then(function (response) {
+			$scope.reviews = response.data;
+		})
+		 .catch(function (err) {});
+	}
+	else {
+		alert("Please Login To See Your Reviews");
+		$window.location.href("/");
+	}
+	
+	//function to update reviews 
+	$scope.updateReview = function (pId,updatedReview) {
+		var data = {
+				review : updatedReview,
+				review_id : pId,
+				token: userToken
+			}
+		var url = '/front/review/update';
+		$http({
+			url: url, // No need of IP address
+			method: 'POST',
+			data: data,
+			headers: {'Content-Type': 'application/json'}
+		}).then(function (response) {
+			console.log("res: ",response);
+			if(response.data == "rUpdated") {
+				alert("Review Updated");
+				$window.location.reload();
+			}
+			else {
+				alert("Some Error Occured Please try again Later");
+			}
+		})
+		 .catch(function (err) {});
+	};
+	
+	//function to delete reviews
+	$scope.deleteReview = function (rId) {
+		var data = {
+				review_id : rId,
+				token: userToken
+			}
+		var url = '/front/review/delete';
+		$http({
+			url: url, // No need of IP address
+			method: 'POST',
+			data: data,
+			headers: {'Content-Type': 'application/json'}
+		}).then(function (response) {
+			console.log("res: ",response);
+			if(response.data == "rDeleted") {
+				alert("Review Deleted");
+				$window.location.reload();
+			}
+			else {
+				alert("Some Error Occured Please try again Later");
+			}
+		})
+		 .catch(function (err) {});
+	};
+	
 }]);
 
 

@@ -1,4 +1,5 @@
-nav ul li {
+nav ul li,
+ul.nolist {
 	display:inline-block;
 	padding:0 20px;
 	list-style:none;
@@ -32,11 +33,6 @@ header a {
 	margin:10px;
 	width:50%;
 	outline:none;
-}
-.list-group-item{
-  float: left;
-  width: 360px;
-  margin: 5px;
 }
 .pull-right{
 	float: right;
@@ -75,11 +71,8 @@ th {
     cursor: pointer;
 }
 .list-group-item{
-  float: left;
-  width: 360px;
-  margin: 5px;
-  padding: 10px;
-	border: 1px solid #BBBBBB;
+	margin:5px;
+	border: 2px dashed #BBBBBB;
 }
 .homepage{
 	background-image: url(../images/background.jpg);
@@ -93,8 +86,7 @@ color: #343434;
 font-family: Montserrat;
 text-align: center;
 }
-.title2
-{
+.title2 {
 position: absolute;
 top: 78%;
 left: 28%;
@@ -102,10 +94,13 @@ text-align: center;
 width: 60%;
 }
 h1{
-	font-size: 250%;
+	font-size: 36px;
 }
 h2{
-	font-size: 120%;
+	font-size: 25px;
+}
+a, a:hover {
+	text-decoration:none !important;
 }
 p.name {
     font-size: 12px;
@@ -116,4 +111,37 @@ p.name {
 p.desc {
     padding: 0;
     margin: 0;
+}
+.reviewbox {
+    width: 400px;
+    margin: 15px auto;
+    padding: 5px;
+    border: 2px dashed #000;
+}
+div#divMain {
+    text-align: center;
+}
+ul.nolist li {
+    padding: 5px;
+    background: #4caf50;
+    margin: 5px 0px;
+    color: #fff;
+    display: inline-block;
+}
+ul.nolist li:hover {
+	cursor:pointer;
+	background:#BBB;
+	color:#4caf50;
+}
+textarea.review {
+	margin-bottom:10px;
+}
+.review {
+    margin-bottom: 20px;
+}
+.list-group-item {
+    padding: 10px 2px !important;
+}
+.col-sm-4 {
+    padding: 0 5px;
 }

@@ -9,8 +9,6 @@ angular.module('frontApp').controller('ProductController', ['$scope', '$http', '
 		.then(function(response) {
 			productsList = response.data;
 			$scope.products = productsList;
-			console.log(productsList);
-			//$scope.rlist = JSON.parse(productsList[0].reviewlist);
 		});
 		
 	$scope.reviewList = function(pid) {
@@ -18,7 +16,7 @@ angular.module('frontApp').controller('ProductController', ['$scope', '$http', '
 		//console.log(list);
 		var reviewHtml = "";
 		for (i in list) {
-			reviewHtml += '<div class="review"><p class="name">'+list[i].user_name+'</p>';
+			reviewHtml += '<div class="review"><p class="name">By: '+list[i].user_name+'</p>';
 			reviewHtml += '<p class="desc">'+list[i].description+'</p></div>';
 		}
 		return reviewHtml;
