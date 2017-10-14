@@ -1,0 +1,35 @@
+<div id="divMain" class="w3-container container clearfix">
+	<div class="col-sm-4" ng-repeat="product in products">
+        <div class="list-group-item">
+            <h1>{{product.product_nm}}      <em class="">{{product.price | currency}}</em>
+                <img ng-src="{{product.image_path}}"/>
+            </h1>
+        
+            <section ng-init="tab =1">
+                <ul class="nolist">
+                	<li ng-class="{active:tab === 1}"><a href ng-click="tab = 1">Description</a></li>
+                	<li ng-class="{active:tab === 2}"><a href ng-click="tab = 2">Ingredients</a></li>
+                    <li ng-class="{active:tab === 2}"><a href ng-click="tab = 3">Reviews</a></li>
+                </ul>
+                <div class="panel" ng-show="tab === 1">
+                	<h4>Description</h4>
+                	<p>{{product.description}}</p>
+                </div>
+                <div class="panel" ng-show="tab === 2">
+                	<h4>Ingredients</h4>
+                	<p>{{product.ingredient}}</p>
+                </div>
+                <div class="panel" ng-show="tab === 3">
+                	<h4>Reviews</h4>
+                    <div ng-bind-html="reviewList($index)"></div>
+                    <br/>
+                    <h4>Add Your Review</h4>
+                       <textarea class="review" type="text" name="review" ng-model="inputReview" placeholder="Your Review"/></textarea><br/>
+                       <button class="w3-button w3-green w3-center" ng-click="addReview(product.product_id,inputReview)" >Add Review</button>
+
+                </div>
+                <button class="w3-button w3-green w3-center" ng-click="addToCart(product.product_nm,product.price)">Add to Cart</button>
+            </section>
+        </div><!-- End List-group-item -->
+    </div><!-- end col-sm-4 -->
+</div><!-- End divMain -->

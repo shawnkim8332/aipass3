@@ -1,0 +1,25 @@
+<div class="cart_table">
+<table class="table">
+	<tr>
+		<th>Number</th>
+		<th>Items</th>
+		<th>price</th>
+		<th>Action</th>
+	</tr>
+	<tr ng-repeat="product in products">
+		<td>
+			{{ $index + 1 }}
+		</td>
+		<td>
+			{{product.name}}
+		</td>
+		<td>
+			{{product.price}}
+		</td>
+		<td>
+		<input type="button" value="Remove" class="btn btn-primary" ng-click="removeRow(product.name)"/>
+		</td>
+	</tr>
+</table>
+		<input type="button" value="Buy" class="buybtn" ng-click="buyNow()"/>
+</div>

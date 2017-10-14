@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
 var index = require('./routes/index');
 var admin = require('./routes/product');
+var frontProducts = require('./routes/product-front');
 var food = require('./routes/food');
 var user = require('./routes/user');
 var app = express();
@@ -40,6 +41,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use('/', index);
+app.use('/front', frontProducts);
 app.use('/api/admin', admin);
 app.use('/api/food', food);
 app.use('/user', user);
@@ -57,55 +59,6 @@ app.get('*', function (req, res) {
     res.sendFile(__dirname + '/views/index.html');
 });
 
-//var Client = require('node-rest-client').Client;
-//var client = new Client();
-//// direct way 
-//client.get("http://aip-rest.appspot.com/api/token/12487106", function (data, response) {
-//    // parsed response body as js object 
-//    var token = data.token.value;
-//	console.log("Token is: "+token);
-//    sequence(token);
-//});
-//
-//function sequence(token) {
-//	url = "http://aip-rest.appspot.com/api/sequence/latest?token="+token;
-//	client.get(url, function (data, response) {
-//		var sequence = data.number;
-//		console.log("Number got from server is: "+data.number);
-//		postData(token,sequence);
-//	});
-//}
-//
-//function postData(token,sequence) {
-//	var num = sequence + 1 ;
-//	
-//	 url = "http://aip-rest.appspot.com/api/sequence?token="+token;
-//	 var request = require('request');
-//	request.post({
-//		url:url,
-//		/*headers: { "Content-Type": "application/x-www-form-urlencoded",
-//					"Access-Control-Allow-Origin": "*",
-//					"Access-Control-Allow-Methods": "POST, PUT, GET, OPTIONS, DELETE",
-//					"Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, x-access-token"},*/
-//		 json: {number:num}},
-//		 function(err,httpResponse,body){ 
-//		 /* ... */ 
-//		 	console.log(body);
-//		 	deleteData(token);
-//		 });
-//}
-//
-//function deleteData(token) {
-//	var request = require('request');
-//	var url = "http://aip-rest.appspot.com/api/lock/12487106?token="+token;
-//	request.del(url,function(error,response,body){
-//	if(error){
-//			  console.log("error is"+error);
-//		 }else{
-//			  console.log("body is: "+body);
-//		}
-//	});
-//}
 
 //Check Server Startup
 try {
