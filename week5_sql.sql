@@ -32,14 +32,19 @@ INDEX i_prod_id (product_id),
 
 CREATE TABLE aip_db.reviews (
 review_id INT(6)  UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-product_id INT(6) UNSIGNED,
-review_description VARCHAR(100) NOT NULL,
-review_stars INT(10) UNSIGNED,
+product_id INT(6) UNSIGNED  NOT NULL,
+user_id INT(6)  UNSIGNED  NOT NULL,
+description varchar(100) NOT NULL,
 reg_date TIMESTAMP,
-modify_date TIMESTAMP,
-INDEX i_prod_id (product_id),
+modified_date TIMESTAMP,
+    INDEX(product_id, user_id),
+
     FOREIGN KEY (product_id)
-        REFERENCES aip_db.product(product_id)
+      REFERENCES aip_db.product(product_id)
+        ON DELETE CASCADE,
+        
+    FOREIGN KEY (user_id)
+      REFERENCES aip_db.users(id)
         ON DELETE CASCADE
 );
 

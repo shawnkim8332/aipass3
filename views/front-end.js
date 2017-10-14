@@ -1,6 +1,6 @@
 (function(){
 //Define App
-var frontApp = angular.module('frontApp', ['ngRoute','ngResource']);
+var frontApp = angular.module('frontApp', ['ngRoute','ngResource','ngSanitize']);
 //Define Config
 frontApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 	$routeProvider

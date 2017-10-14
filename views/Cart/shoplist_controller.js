@@ -2,7 +2,7 @@ angular.module('frontApp')
     .controller('shoplistcontroller', ['$scope', '$http', '$window', '$rootScope', function($scope, $http, $window, $rootScope){
 	$scope.products = JSON.parse(localStorage.getItem("products"));
 					
-	if($scope.products.length == 0) {
+	if($scope.products == undefined || $scope.products.length == 0) {
 		alert("Please Add some Products in your cart to buy");
 		$window.location.href = ("/product");
 	}
@@ -30,7 +30,7 @@ angular.module('frontApp')
 				}
 				else {
 					alert("Thank You For Your Order!");
-					localStorage.setItem("products", '');
+					localStorage.setItem("products", "[{0}]");
 					$window.location.href = ("/");
 				}
 				

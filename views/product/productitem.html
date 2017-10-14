@@ -20,7 +20,17 @@
                 </div>
                 <div class="panel" ng-show="tab === 3">
                 	<h4>Reviews</h4>
-                	<p>{{}}</p>
+                    <div ng-bind-html="reviewList($index)"></div>
+                    
+                    <div ng-repeat="review in products[product.product_id].reviewlist">
+                		<p>{{review.user_name}}</p>
+                        <p>{{review.description}}</p>
+                    </div>
+                    <br/>
+                    <h4>Add Your Review</h4>
+                       <input type="text" name="review" ng-model="inputReview" placeholder="Your Review"/><br/>
+                       <button class="w3-button w3-green w3-center" ng-click="addReview(product.product_id,inputReview)" >Add Review</button>
+
                 </div>
                 <button ng-click="addToCart(product.product_nm,product.price)">Add to Cart</button>
             </section>
