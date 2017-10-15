@@ -9,6 +9,8 @@ router.get("/product/list",function(req,res){
         if (err) throw err;
         var sql = "SELECT product_id,";
         sql += " product_nm,";
+        sql += " image_path,";
+        sql += " price,";
         sql += " description";
         sql += " FROM product as p";
 
@@ -30,6 +32,9 @@ router.get("/product/:id",function(req,res){
 
         var sql = "SELECT p.product_id, ";
         sql += "p.product_nm, ";
+        sql += "p.image_path,";
+        sql += "p.price,";
+        sql += "p.ingredient,";
         sql += "p.description ";
         sql += "FROM product as p ";
         sql += "where p.product_id = ?";
@@ -57,10 +62,10 @@ router.post('/product/:id', function(req, res, next){
     getConnection(function (err, con) {
         if (err) throw err;
 
-        var sql = "UPDATE product set product_nm = ?, description = ?  where product_id = ?";
+        var sql = "UPDATE product set product_nm = ?, description = ?, image_path = ?, ingredient = ?, price = ?  where product_id = ?";
 
         //binding input data into update sql
-        var values = [product.product_nm, product.description, product.product_id];
+        var values = [product.product_nm, product.description, product.filename, product.ingredient, product.price, product.product_id];
 
         con.query(sql, values, function (err, result) {
             if (err) throw err;
@@ -69,6 +74,51 @@ router.post('/product/:id', function(req, res, next){
         });
     });
 });
+
+//Inserting product data
+router.put('/product/add', function(req, res, next){
+    // getting input data
+    var product = req.body;
+
+    console.log(product.product_nm);
+
+    getConnection(function (err, con) {
+        if (err) throw err;
+
+        var sql = "Insert into product SELECT max(product_id) + 1, ?, ?, Now(), ?, ?, ? from product";
+
+        //binding input data into insert sql
+        var values = [product.product_nm, product.description, product.filename, product.price, product.ingredient];
+
+        con.query(sql, values, function (err, result) {
+            if (err) throw err;
+            console.log(result.affectedRows + " Product record inserted");
+            return res.json();
+        });
+    });
+});
+
+//Inserting product data
+router.delete('/product/:id', function(req, res, next){
+    // getting input data
+    var product = req.body;
+
+    getConnection(function (err, con) {
+        if (err) throw err;
+
+        var sql = "delete from product where product_id = ?";
+
+        //binding input data into insert sql
+        var values = [product.product_id];
+
+        con.query(sql, values, function (err, result) {
+            if (err) throw err;
+            console.log(result.affectedRows + " Product record deleted");
+            return res.json();
+        });
+    });
+});
+
 
 //Retrieving flavor data
 /*
@@ -119,13 +169,14 @@ router.get("/ingredient/:id",function(req,res){
         });
     });
 });
-*/
 
 router.get("/product/list",function(req,res){
     getConnection(function (err, con) {
         if (err) throw err;
         var sql = "SELECT product_id,";
         sql += " product_nm,";
+        sql += " image,";
+        sql += " price,";
         sql += " description";
         sql += " FROM product as p";
 
@@ -139,5 +190,6 @@ router.get("/product/list",function(req,res){
         });
     });
 });
+*/
 
 module.exports = router;

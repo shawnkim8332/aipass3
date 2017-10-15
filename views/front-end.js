@@ -1,6 +1,6 @@
 (function(){
 //Define App
-var frontApp = angular.module('frontApp', ['ngRoute','ngResource','ngSanitize']);
+var frontApp = angular.module('frontApp', ['ngRoute','ngResource','ngSanitize','ngFileUpload']);
 //Define Config
 frontApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
 	$routeProvider
@@ -44,8 +44,11 @@ frontApp.config(['$routeProvider', '$locationProvider', function($routeProvider,
             templateUrl : 'cart/shoplist.html',
             controller: 'shoplistcontroller'
         })
+        .when("/admin/add/product", {
+            templateUrl : 'admin/product_add.html',
+            controller: 'ProductCreationController'
+        })
         .when("/admin/product/:id", {
-            //templateUrl: function(params){ return 'admin/product_detail.html' + params.id; },
             templateUrl : 'admin/product_detail.html',
             controller: 'ProductDetailController'
         })

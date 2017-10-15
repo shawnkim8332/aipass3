@@ -10,7 +10,7 @@ var frontProducts = require('./routes/product-front');
 var food = require('./routes/food');
 var user = require('./routes/user');
 var app = express();
-
+var multer = require('multer');
 //Server Ports
 var port = 3000;
 
@@ -40,6 +40,7 @@ app.use(cors());
 //Body Parser For App
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+
 app.use('/', index);
 app.use('/front', frontProducts);
 app.use('/api/admin', admin);
@@ -57,6 +58,31 @@ app.use(function(req, res, next) {
 app.use(express.static('views'));
 app.get('*', function (req, res) {
     res.sendFile(__dirname + '/views/index.html');
+});
+
+var storage = multer.diskStorage({ //multers disk storage settings
+    destination: function (req, file, cb) {
+        cb(null, './views/images/')
+    },
+    filename: function (req, file, cb) {
+        var datetimestamp = Date.now();
+        cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length -1])
+    }
+});
+
+var upload = multer({ //multer settings
+    storage: storage
+}).single('file');
+
+/** API path that will upload the files */
+app.post('/api/file/upload', function(req, res) {
+    upload(req,res,function(err){
+        if(err){
+            res.json({error_code:1,err_desc:err});
+            return;
+        }
+        res.json({error_code:0,err_desc:null,filename:req.file.filename});
+    })
 });
 
 
