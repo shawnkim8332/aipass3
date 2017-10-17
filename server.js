@@ -1,16 +1,15 @@
-//Server File Called As node Index
-//Stating Required Classes
 var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
 var index = require('./routes/index');
-var admin = require('./routes/product');
-var frontProducts = require('./routes/product-front');
+var admin = require('./routes/admin');
+var frontProducts = require('./routes/product');
 var food = require('./routes/food');
 var user = require('./routes/user');
 var app = express();
 var multer = require('multer');
+
 //Server Ports
 var port = 3000;
 
@@ -30,9 +29,6 @@ router.use(function(req, res, next) {
     next();
 });
 
-//Set Static Folder
-//app.use(express.static(path.join(__dirname, 'client')));
-
 //Cors Policy Definition
 var cors = require('cors')
 app.use(cors());
@@ -41,6 +37,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
+//Route Path
 app.use('/', index);
 app.use('/front', frontProducts);
 app.use('/api/admin', admin);
@@ -60,6 +57,7 @@ app.get('*', function (req, res) {
     res.sendFile(__dirname + '/views/index.html');
 });
 
+//File Upload Storage for App
 var storage = multer.diskStorage({ //multers disk storage settings
     destination: function (req, file, cb) {
         cb(null, './views/images/')
@@ -74,7 +72,6 @@ var upload = multer({ //multer settings
     storage: storage
 }).single('file');
 
-/** API path that will upload the files */
 app.post('/api/file/upload', function(req, res) {
     upload(req,res,function(err){
         if(err){
@@ -84,7 +81,6 @@ app.post('/api/file/upload', function(req, res) {
         res.json({error_code:0,err_desc:null,filename:req.file.filename});
     })
 });
-
 
 //Check Server Startup
 try {

@@ -2,6 +2,8 @@ var unirest = require('unirest');
 var express = require('express');
 var router = express.Router();
 var apikey = "uceoxKzgAQmshwQy7iGKdZff8PcKp1XisucjsnS9qKSG9qMzeO";
+
+//Get Food Menu API : External spoonacular RESTful API
 router.get("/menuitem",function(req,res){
     var input = req.query;
     var queryString = input.queryString;

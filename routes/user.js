@@ -9,7 +9,6 @@ var ses = require('node-ses'), client = ses.createClient({ key: '---', secret: '
 
 //User Register Function
 router.post("/register",function(req,res){
-    console.log(req.body);
 	var user = req.body;
 	getConnection(function (err, con) {
         if (err) throw err;
@@ -41,8 +40,6 @@ router.post("/register",function(req,res){
 
 //User Login Function
 router.post("/login",function(req,res){
-	console.log("Login Called");
-    console.log(req.body);
 	var user = req.body;
 	
 	getConnection(function (err, con) {
@@ -66,7 +63,6 @@ router.post("/login",function(req,res){
 				return res.send('notFound');
 			} 
 			else {
-				console.log('user found: '+rows);
 				if(rows[0].password == encPass) {
 					var tokenData = {
 						username: rows[0].first_name,
@@ -120,7 +116,6 @@ router.post("/auth/",function(req,res){
 
 //User Password Reset checks Function
 router.post("/reset",function(req,res){
-    console.log(req.body);
 	var user = req.body;
 	getConnection(function (err, con) {
         if (err) throw err;
@@ -151,14 +146,11 @@ router.post("/reset",function(req,res){
 
 //generate and send token via email to reset the password.
 function sendEmail(name,email) {
-	console.log("names is:"+name);
-	console.log("email is:"+email);
 	var tokenData = {
 		email: email,
 		secret : 'aipEmailPasswordResetChecks',
 	};
 	var resetToken = jwt.sign(tokenData, 'userPassReset');
-	console.log("token is:"+resetToken);
 	msg = "Hi "+name+"<br/>";
 	msg += "A Passowrd Reset request is made on Hello Fresh Webiste<br><br>Please click on following link to reset your password<br><br>";
 	msg += "<a href='http://aip2017.webon.com.au/email-reset?resVal="+resetToken+"'>http://aip2017.webon.com.au/email-reset?resVal="+resetToken+"</a><br/><br/>";
@@ -181,8 +173,6 @@ function sendEmail(name,email) {
 router.post("/confirmEmail",function(req,res){
 	var data = req.body;
 	var products = data.products;
-	console.log(data.products);
-	console.log(data.email);
 	var msg = "Hi, There<br/><br/>";
 	msg+= "Thank You For Making a recent order on Hello Fresh<br/> Here is a summary of order made<br/>";
 	var i=1;
@@ -191,7 +181,6 @@ router.post("/confirmEmail",function(req,res){
 		i++;
 	}
 	msg +="<br/>Many Thanks<br/>Hello Fresh<br/>UTS AIP 2017 Group";
-	console.log(msg);
 	client.sendEmail({
 		   to: data.email,
 		   from: 'vatshpatel@gmail.com',
@@ -212,7 +201,6 @@ router.post("/confirmEmail",function(req,res){
 router.post("/updatepass",function(req,res){
 	var data = req.body;
 	var token = data.token;
-	console.log("Token Got is:"+token);
 	if (token) {
         // verifies secret and checks exp
         jwt.verify(token, 'userPassReset', function(err, decoded) {
@@ -260,7 +248,6 @@ function updatePassword(email,password) {
 //Add User if no Email Found
 function addUser(user) {
 	getConnection(function (err, con) {
-		console.log("register Called");
 		if (err) throw err;
 
 		var sql = "Insert into users (first_name,last_name,role,email,password,created,modified) values ?";
@@ -278,7 +265,6 @@ function addUser(user) {
 				console.log('Error while adding user: '+err);
 				//return res.send(err);
 			}
-			console.log('user added');
 			con.release();
 			//return res.json(rows);
 		});

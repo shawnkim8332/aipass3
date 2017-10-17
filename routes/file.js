@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 var multer = require('multer');
 
-var storage = multer.diskStorage({ //multers disk storage settings
+//multers disk storage settings
+var storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './uploads/')
     },
@@ -11,11 +12,13 @@ var storage = multer.diskStorage({ //multers disk storage settings
         cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length -1])
     }
 });
-var upload = multer({ //multer settings
+
+//Multer settings
+var upload = multer({
     storage: storage
 }).single('file');
 
-/** API path that will upload the files */
+//API path that will upload the files
 router.post('/upload', function(req, res) {
     upload(req,res,function(err){
         if(err){

@@ -1,14 +1,32 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
-var getConnection = require('./db');
 var jwt = require('jsonwebtoken');
-
+var getConnection = require('./db');
 
 //Retrieving product list from database
-router.post("/product/list",function(req,res){
-    var data = req.body;
-    var token = data.token;
+router.get("/product/list",function(req,res){
+    getConnection(function (err, con) {
+        if (err) throw err;
+		
+		var sql = "SELECT p.product_id,p.product_nm, p.image_path,p.price,p.ingredient,p.description, CONCAT('[', GROUP_CONCAT(JSON_OBJECT('description', r.description, 'user_name', u.first_name)), ']') reviewlist FROM aip_db.product p LEFT JOIN aip_db.reviews r ON r.product_id = p.product_id LEFT JOIN aip_db.users u ON u.id = r.user_id GROUP BY p.product_id";
+		
+		
+        con.query(sql, function (err, rows, fields) {
+            if (err){
+                console.log('Error while retrieving product list data');
+                con.release();
+                return res.send(err);
+            }
+            return res.json(rows);
+        });
+		con.release();
+    });
+});
+//function to add reviews
+router.post("/review/add",function(req,res){
+	var data = req.body;
+	var token = data.token;
     // decode token
     if (token) {
         // verifies secret and checks exp
@@ -16,90 +34,33 @@ router.post("/product/list",function(req,res){
             if (err) {
                 console.log(err);
                 return res.json({ success: false, message: 'Failed to authenticate token.' });
-            }else {
-                if(decoded.scope == 'admin') {
-                    getConnection(function (err, con) {
-                        if (err) throw err;
-                        var sql = "SELECT product_id,";
-                        sql += " product_nm,";
-                        sql += " image_path,";
-                        sql += " price,";
-                        sql += " description";
-                        sql += " FROM product as p";
-
-                        con.query(sql, function (err, rows, fields) {
-                            if (err){
-                                console.log('Error while retrieving product list data');
-                                con.release();
-                                return res.send(err);
-                            }
-                            return res.json(rows);
-                        });
-                    });
-                }else {
-                    return res.send("Authentication Error");
-                }
             }
-        });
-   }
-   else {
-        return res.send("Authentication Error");
-    }
-});
-
-//Retrieving single product data
-router.post("/product/detail/:id",function(req,res){
-    var data = req.body;
-    var token = data.token;
-    // decode token
-    if (token) {
-        // verifies secret and checks exp
-        jwt.verify(token, 'userLogin', function (err, decoded) {
-            if (err) {
-                console.log(err);
-                return res.json({success: false, message: 'Failed to authenticate token.'});
-            } else {
-                if (decoded.scope == 'admin') {
-                    getConnection(function (err, con) {
-                        if (err) throw err;
-
-                        var sql = "SELECT p.product_id, ";
-                        sql += "p.product_nm, ";
-                        sql += "p.image_path,";
-                        sql += "p.price,";
-                        sql += "p.ingredient,";
-                        sql += "p.description ";
-                        sql += "FROM product as p ";
-                        sql += "where p.product_id = ?";
-
-                        //binding product id in the where clause
-                        var values = [req.params.id];
-
-                        con.query(sql, [values], function (err, rows, fields) {
-                            if (err) {
-                                console.log('Error while retrieving single product');
-                                return res.send(err);
-                            }
-                            console.log('product data retrieved');
-                            con.release();
-                            return res.json(rows);
-                        });
-                    });
-                } else {
-                    return res.send("Authentication Error");
-                }
+            else {
+				var userId = decoded.id;
+                // if everything is good, save to request for use in other routes
+				getConnection(function (err, con) {
+        			if (err) throw err;
+					 
+					 var sql = "INSERT into aip_db.reviews (product_id, user_id, description, reg_date, modified_date) values(?,?,?,now(),now())";
+					 var values = [data.product_id,userId,data.review];
+					  con.query(sql, values, function (err, result) {
+						if (err) throw err;
+						console.log("Review Added");
+						return res.json("rAdded");
+					  });
+				con.release();
+        		});
             }
         });
     }
     else {
-        return res.send("Authentication Error");
+        return "error";
     }
 });
-
-//Updating product data
-router.post('/product/:id', function(req, res, next){
-    var data = req.body;
-    var token = data.token;
+//function to list reviews
+router.post("/review/userReviewList",function(req,res){
+	var data = req.body;
+	var token = data.token;
     // decode token
     if (token) {
         // verifies secret and checks exp
@@ -107,39 +68,34 @@ router.post('/product/:id', function(req, res, next){
             if (err) {
                 console.log(err);
                 return res.json({ success: false, message: 'Failed to authenticate token.' });
-            }else {
-                if(decoded.scope == 'admin') {
-                    // getting input data
-                    var product = req.body;
-                    getConnection(function (err, con) {
-                        if (err) throw err;
-
-                        var sql = "UPDATE product set product_nm = ?, description = ?, image_path = ?, ingredient = ?, price = ?  where product_id = ?";
-
-                        //binding input data into update sql
-                        var values = [product.product_nm, product.description, product.filename, product.ingredient, product.price, product.product_id];
-
-                        con.query(sql, values, function (err, result) {
-                            if (err) throw err;
-                            console.log(result.affectedRows + " Product record updated");
-                            return res.json();
-                        });
-                    });
-                } else {
-                    return res.send("Authentication Error");
-                }
+            }
+            else {
+				var userId = decoded.id;
+				console.log("User Id is :"+userId);
+                // if everything is good, save to request for use in other routes
+				getConnection(function (err, con) {
+        			if (err) throw err;
+					 
+					 var sql = "SELECT r.review_id,r.description,p.product_nm from aip_db.reviews r INNER JOIN aip_db.product p ON r.product_id = p.product_id where r.user_id = 8;";
+					 var values = [userId];
+					  con.query(sql, values, function (err, rows, fields) {
+						if (err) throw err;
+						return res.json(rows);
+					  });
+					con.release();
+        		});
             }
         });
     }
     else {
-        return res.send("Authentication Error");
+        return "error";
     }
 });
 
-//Inserting product data
-router.put('/product/add', function(req, res, next){
-    var data = req.body;
-    var token = data.token;
+//function to update reviews
+router.post("/review/update",function(req,res){
+	var data = req.body;
+	var token = data.token;
     // decode token
     if (token) {
         // verifies secret and checks exp
@@ -147,40 +103,34 @@ router.put('/product/add', function(req, res, next){
             if (err) {
                 console.log(err);
                 return res.json({ success: false, message: 'Failed to authenticate token.' });
-            }else {
-                if(decoded.scope == 'admin') {
-                    // getting input data
-                    var product = req.body;
-
-                    getConnection(function (err, con) {
-                        if (err) throw err;
-
-                        var sql = "Insert into product SELECT max(product_id) + 1, ?, ?, Now(), ?, ?, ? from product";
-
-                        //binding input data into insert sql
-                        var values = [product.product_nm, product.description, product.filename, product.price, product.ingredient];
-
-                        con.query(sql, values, function (err, result) {
-                            if (err) throw err;
-                            console.log(result.affectedRows + " Product record inserted");
-                            return res.json();
-                        });
-                    });
-                } else {
-                    return res.send("Authentication Error");
-                }
+            }
+            else {
+				var userId = decoded.id;
+                // if everything is good, save to request for use in other routes
+				getConnection(function (err, con) {
+        			if (err) throw err;
+					 
+					 var sql = "UPDATE aip_db.reviews r SET r.description = ? WHERE r.review_id = ? AND r.user_id = ?";
+					 var values = [data.review,data.review_id,userId];
+					  con.query(sql, values, function (err, result) {
+						if (err) throw err;
+						console.log("Review Added");
+						return res.json("rUpdated");
+					  });
+				con.release();
+        		});
             }
         });
     }
     else {
-        return res.send("Authentication Error");
+        return "error";
     }
 });
 
-//Inserting product data
-router.delete('/product/:id', function(req, res, next){
-    var data = req.body;
-    var token = data.token;
+//function to Delete reviews
+router.post("/review/delete",function(req,res){
+	var data = req.body;
+	var token = data.token;
     // decode token
     if (token) {
         // verifies secret and checks exp
@@ -188,32 +138,27 @@ router.delete('/product/:id', function(req, res, next){
             if (err) {
                 console.log(err);
                 return res.json({ success: false, message: 'Failed to authenticate token.' });
-            }else {
-                if(decoded.scope == 'admin') {
-                    // getting input data
-                    var product = req.body;
-                    getConnection(function (err, con) {
-                        if (err) throw err;
-
-                        var sql = "delete from product where product_id = ?";
-
-                        //binding input data into insert sql
-                        var values = [product.product_id];
-
-                        con.query(sql, values, function (err, result) {
-                            if (err) throw err;
-                            console.log(result.affectedRows + " Product record deleted");
-                            return res.json();
-                        });
-                    });
-                } else {
-                    return res.send("Authentication Error");
-                }
+            }
+            else {
+				var userId = decoded.id;
+                // if everything is good, save to request for use in other routes
+				getConnection(function (err, con) {
+        			if (err) throw err;
+					 
+					 var sql = "delete from aip_db.reviews  where review_id = ? and user_id = ? limit 1";
+					 var values = [data.review_id,userId];
+					  con.query(sql, values, function (err, result) {
+						if (err) throw err;
+						console.log("Review Deleted");
+						return res.json("rDeleted");
+					  });
+				con.release();
+        		});
             }
         });
     }
     else {
-        return res.send("Authentication Error");
+        return "error";
     }
 });
 
