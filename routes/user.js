@@ -91,8 +91,9 @@ router.post("/login",function(req,res){
 	}); // end getConnection
 });
 
-router.get("/auth/:token",function(req,res){
-	var token = [req.params.token].toString();
+router.post("/auth/",function(req,res){
+    var data = req.body;
+    var token = data.token;
     // decode token
     if (token) {
         // verifies secret and checks exp
