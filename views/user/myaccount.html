@@ -1,8 +1,9 @@
+<!-- myaccount page html -->
 <div id="mainBody">
 	<h1>Here is the list of all your reviews:</h1>
     <div class="reviewbox" ng-repeat="(i, review) in reviews track by $index">
     	<p class="reviewProName">{{$index+1}}. Product Name: {{review.product_nm}}</p>
         <textarea cols="30" ng-model="reviews[i].description" class="reviewText">{{review.description}}</textarea><br/>
         <button class="w3-button w3-green w3-center" ng-click="updateReview(review.review_id,reviews[i].description)" >Update Review</button><button class="w3-button w3-green w3-center" ng-click="deleteReview(review.review_id)" >Delete Review</button>
-    </div>
-</div>
+    </div><!-- end reviewbox -->
+</div><!-- end div#mainBody -->
