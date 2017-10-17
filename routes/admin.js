@@ -119,9 +119,21 @@ router.post('/product/:id', function(req, res, next){
                         var values = [product.product_nm, product.description, product.filename, product.ingredient, product.price, product.product_id];
 
                         con.query(sql, values, function (err, result) {
-                            if (err) throw err;
-                            console.log(result.affectedRows + " Product record updated");
-                            return res.json();
+                            if (err) {
+                                con.rollback(function() {
+                                    throw err;
+                                });
+                            }
+                            con.commit(function(err) {
+                                if (err) {
+                                    con.rollback(function() {
+                                        throw err;
+                                    });
+                                }
+                                con.release();
+                                console.log(result.affectedRows + " Product record updated");
+                                return res.json();
+                            });
                         });
                     });
                 } else {
@@ -160,9 +172,21 @@ router.put('/product/add', function(req, res, next){
                         var values = [product.product_nm, product.description, product.filename, product.price, product.ingredient];
 
                         con.query(sql, values, function (err, result) {
-                            if (err) throw err;
-                            console.log(result.affectedRows + " Product record inserted");
-                            return res.json();
+                            if (err) {
+                                con.rollback(function() {
+                                    throw err;
+                                });
+                            }
+                            con.commit(function(err) {
+                                if (err) {
+                                    con.rollback(function() {
+                                        throw err;
+                                    });
+                                }
+                                con.release();
+                                console.log(result.affectedRows + " Product record inserted");
+                                return res.json();
+                            });
                         });
                     });
                 } else {
@@ -200,9 +224,21 @@ router.delete('/product/:id', function(req, res, next){
                         var values = [product.product_id];
 
                         con.query(sql, values, function (err, result) {
-                            if (err) throw err;
-                            console.log(result.affectedRows + " Product record deleted");
-                            return res.json();
+                            if (err) {
+                                con.rollback(function() {
+                                    throw err;
+                                });
+                            }
+                            con.commit(function(err) {
+                                if (err) {
+                                    con.rollback(function() {
+                                        throw err;
+                                    });
+                                }
+                                con.release();
+                                console.log(result.affectedRows + " Product record deleted");
+                                return res.json();
+                            });
                         });
                     });
                 } else {
