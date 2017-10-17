@@ -3,6 +3,7 @@
 var frontApp = angular.module('frontApp', ['ngRoute','ngResource','ngSanitize','ngFileUpload']);
 //Define Config
 frontApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+	//Define routes
 	$routeProvider
 		.when("/", {
 			templateUrl : 'home/home.html',
@@ -69,20 +70,22 @@ frontApp.controller('userCtrl', function($scope,$rootScope) {
     $scope.user = localStorage.getItem("name");
 });
 
+//Deleting Headers
 frontApp.config(function($httpProvider){
     delete $httpProvider.defaults.headers.common['X-Requested-With'];
 });
 
-frontApp.controller('indexFrontController', ['$scope', '$http', '$location', '$window',function($scope, $http, $location, $window){
 
+//index page controller
+frontApp.controller('indexFrontController', ['$scope', '$http', '$location', '$window',function($scope, $http, $location, $window){
 
 }]);
 
+//signup page controller
 frontApp.controller('signUpController', ['$scope', '$http', '$location', '$window',function($scope, $http, $location, $window){
-		//on submit   
+	//on submit   
 	$scope.myTxt = "You have not yet clicked submit";
     $scope.signUp = function () {
-		console.log("Submit");
 		var data = {
                 name : $scope.inputSignUpName,
                 lastname: $scope.inputSignUpLastName,
@@ -109,11 +112,11 @@ frontApp.controller('signUpController', ['$scope', '$http', '$location', '$windo
     }
 }]);
 
+//login page controller
 frontApp.controller('loginController', ['$scope', '$http', '$location', '$window',function($scope, $http, $location, $window){
-		//on submit   
+	//on submit   
 	$scope.myRes = "You have not yet clicked submit";
     $scope.logIn = function () {
-		console.log("Submit");
 		var data = {
                	email : $scope.inputLogInEmail,
 				password : $scope.inputLogInPassword
@@ -138,13 +141,13 @@ frontApp.controller('loginController', ['$scope', '$http', '$location', '$window
 				alert("Thank You For Logging In");
 				$window.location.href = ("/");
 			}
-			//	$window.location.reload();
 		})
 		 .catch(function (err) {});
     }
 
 }]);
 
+//logout page controller
 frontApp.controller('logOutController', ['$scope', '$http', '$location', '$window',function($scope, $http, $location, $window){
 	localStorage.setItem("token", '');
 	localStorage.setItem("name", '');
@@ -153,10 +156,10 @@ frontApp.controller('logOutController', ['$scope', '$http', '$location', '$windo
 	$window.location.href = ("/");
 }]);
 
+//email reset page controller
 frontApp.controller('resetController', ['$scope', '$http', '$location', '$window',function($scope, $http, $location, $window){
 	$scope.resetTxt = "You have not yet clicked submit";
     $scope.resetPass = function () {
-		console.log("Submit");
 		var data = {
                	email : $scope.inputResetEmail,
             }
@@ -179,11 +182,11 @@ frontApp.controller('resetController', ['$scope', '$http', '$location', '$window
     }
 }]);
 
+//password update page controller
 frontApp.controller('resetEmailController', ['$scope', '$http', '$location', '$window',function($scope, $http, $location, $window){
 	$scope.resetEmailTxt = "You have not yet clicked submit";
     $scope.resetPassEmail = function () {
 		var token = $location.search().resVal; 
-		console.log("Token: "+token);
 		var data = {
 				token: token,
                	password : $scope.newPassword,
@@ -208,6 +211,7 @@ frontApp.controller('resetEmailController', ['$scope', '$http', '$location', '$w
     }
 }]);
 
+//myaccount page controller
 frontApp.controller('myAccountController', ['$scope', '$http', '$location', '$window',function($scope, $http, $location, $window){
 	//check user token
 	var userToken = localStorage.getItem("token");
@@ -280,28 +284,7 @@ frontApp.controller('myAccountController', ['$scope', '$http', '$location', '$wi
 			}
 		})
 		 .catch(function (err) {});
-	};
-	
+	};	
 }]);
-
-
-/* Directives */
-/*
-frontApp.module(['frontApp.directives']);
-angular.module('frontApp.directives', [])
-    .directive('pwCheck', [function () {
-    return {
-        require: 'ngModel',
-        link: function (scope, elem, attrs, ctrl) {
-            var firstPassword = '#' + attrs.pwCheck;
-            elem.add(firstPassword).on('keyup', function () {
-                scope.$apply(function () {
-                    // console.info(elem.val() === $(firstPassword).val());
-                    ctrl.$setValidity('pwmatch', elem.val() === $(firstPassword).val());
-                });
-            });
-        }
-    }
-}]); */
 
 })();

@@ -1,16 +1,15 @@
-//angular.module('frontApp')
-//.controller('ProductController',function(){
-//	this.products=boxs;
-//});
-
+//Product controller module
 angular.module('frontApp').controller('ProductController', ['$scope', '$http', '$location', '$window',function($scope, $http, $location, $window){
+	
+	//Fetch product list
 	var productsList = "";
 	$http.get('/front/product/list')
 		.then(function(response) {
 			productsList = response.data;
 			$scope.products = productsList;
-		});
-		
+	});
+	
+	//fetch and print reviews for products
 	$scope.reviewList = function(pid) {
 		var list = JSON.parse(productsList[pid].reviewlist);
 		//console.log(list);
@@ -25,7 +24,6 @@ angular.module('frontApp').controller('ProductController', ['$scope', '$http', '
 	//function to add products to cart
 	$scope.addToCart = function(productName,productPrice) {
 		products = JSON.parse(localStorage.getItem("products"));
-		//console.log("Prducst are:"+ products);
 		if(products == null || products == "undefined" || !(products instanceof Array)) {
 			var products = [];
 			products.push({name:productName, price:productPrice});
@@ -46,7 +44,7 @@ angular.module('frontApp').controller('ProductController', ['$scope', '$http', '
 					review : pReview,
 					product_id : pId,
 					token: userToken
-				}
+			}
 			var url = '/front/review/add';
 			$http({
 				url: url, // No need of IP address
@@ -62,7 +60,6 @@ angular.module('frontApp').controller('ProductController', ['$scope', '$http', '
 				else {
 					alert("Some Error Occured Please try again Later");
 				}
-				//	$window.location.reload();
 			})
 			 .catch(function (err) {});
 		}
