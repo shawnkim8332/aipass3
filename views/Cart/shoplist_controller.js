@@ -1,12 +1,12 @@
 angular.module('frontApp')
     .controller('shoplistcontroller', ['$scope', '$http', '$window', '$rootScope', function($scope, $http, $window, $rootScope){
-	$scope.products = JSON.parse(localStorage.getItem("products"));
-					
+	$scope.products = JSON.parse(localStorage.getItem("products"));					
 	if($scope.products == undefined || $scope.products.length == 0) {
 		alert("Please Add some Products in your cart to buy");
 		$window.location.href = ("/product");
 	}
 	
+	//function to buy and send email 
 	$scope.buyNow = function () {
 		var userEmail =localStorage.getItem("email");
 		if(userEmail == null) {
@@ -32,13 +32,13 @@ angular.module('frontApp')
 					alert("Thank You For Your Order! Please check your email for conformation");
 					localStorage.setItem("products", "[]");
 					$window.location.href = ("/");
-				}
-				
+				}			
 			})
 			 .catch(function (err) {});
 		}
 	}
 	
+	//function of removing row for cart list
 	$scope.removeRow = function(name){				
 		var index = -1;		
 		var comArr = eval( $scope.products );
@@ -48,7 +48,7 @@ angular.module('frontApp')
 				break;
 			}
 		}
-		if( index === -1 ) {
+			if( index === -1 ) {
 			alert( "Something gone wrong" );
 		}
 		$scope.products.splice( index, 1 );	
