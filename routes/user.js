@@ -239,8 +239,20 @@ function updatePassword(email,password) {
         //binding input data into update sql
         var values = [password, email];
         con.query(sql, values, function (err, result) {
-            if (err) throw err;
-            console.log(result.affectedRows + " user record updated");
+            if (err) {
+                con.rollback(function() {
+                    throw err;
+                });
+            }
+            con.commit(function(err) {
+                if (err) {
+                    con.rollback(function() {
+                        throw err;
+                    });
+                }
+                con.release();
+                if (err) throw err;
+            });
         });
     });
 }
@@ -261,12 +273,21 @@ function addUser(user) {
 		var values = [[user.name,user.lastname,'customer',user.email,encPass,now,now]];
 
 		con.query(sql, [values], function (err, rows, fields) {
-			if (err){
-				console.log('Error while adding user: '+err);
-				//return res.send(err);
-			}
-			con.release();
-			//return res.json(rows);
+            if (err) {
+                console.log('Error while adding user: '+err);
+                con.rollback(function() {
+                    throw err;
+                });
+            }
+            con.commit(function(err) {
+                if (err) {
+                    con.rollback(function() {
+                        throw err;
+                    });
+                }
+                con.release();
+                if (err) throw err;
+            });
 		});
 	}); // end getConnection
 }

@@ -44,11 +44,24 @@ router.post("/review/add",function(req,res){
 					 var sql = "INSERT into aip_db.reviews (product_id, user_id, description, reg_date, modified_date) values(?,?,?,now(),now())";
 					 var values = [data.product_id,userId,data.review];
 					  con.query(sql, values, function (err, result) {
-						if (err) throw err;
-						console.log("Review Added");
-						return res.json("rAdded");
+                          if (err) {
+                              console.log('Error while adding user: '+err);
+                              con.rollback(function() {
+                                  throw err;
+                              });
+                          }
+                          con.commit(function(err) {
+                              if (err) {
+                                  con.rollback(function() {
+                                      throw err;
+                                  });
+                              }
+                              con.release();
+                              if (err) throw err;
+                              console.log("Review Added");
+                              return res.json("rAdded");
+                          });
 					  });
-				con.release();
         		});
             }
         });
@@ -113,11 +126,24 @@ router.post("/review/update",function(req,res){
 					 var sql = "UPDATE aip_db.reviews r SET r.description = ? WHERE r.review_id = ? AND r.user_id = ?";
 					 var values = [data.review,data.review_id,userId];
 					  con.query(sql, values, function (err, result) {
-						if (err) throw err;
-						console.log("Review Added");
-						return res.json("rUpdated");
+                          if (err) {
+                              console.log('Error while adding user: '+err);
+                              con.rollback(function() {
+                                  throw err;
+                              });
+                          }
+                          con.commit(function(err) {
+                              if (err) {
+                                  con.rollback(function() {
+                                      throw err;
+                                  });
+                              }
+                              con.release();
+                              if (err) throw err;
+                              console.log("Review Added");
+                              return res.json("rUpdated");
+                          });
 					  });
-				con.release();
         		});
             }
         });
@@ -148,11 +174,24 @@ router.post("/review/delete",function(req,res){
 					 var sql = "delete from aip_db.reviews  where review_id = ? and user_id = ? limit 1";
 					 var values = [data.review_id,userId];
 					  con.query(sql, values, function (err, result) {
-						if (err) throw err;
-						console.log("Review Deleted");
-						return res.json("rDeleted");
+                          if (err) {
+                              console.log('Error while adding user: '+err);
+                              con.rollback(function() {
+                                  throw err;
+                              });
+                          }
+                          con.commit(function(err) {
+                              if (err) {
+                                  con.rollback(function() {
+                                      throw err;
+                                  });
+                              }
+                              con.release();
+                              if (err) throw err;
+                              console.log("Review Deleted");
+                              return res.json("rDeleted");
+                          });
 					  });
-				con.release();
         		});
             }
         });
