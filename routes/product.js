@@ -76,7 +76,7 @@ router.post("/review/userReviewList",function(req,res){
 				getConnection(function (err, con) {
         			if (err) throw err;
 					 
-					 var sql = "SELECT r.review_id,r.description,p.product_nm from aip_db.reviews r INNER JOIN aip_db.product p ON r.product_id = p.product_id where r.user_id = 8;";
+					 var sql = "SELECT r.review_id,r.description,p.product_nm from aip_db.reviews r INNER JOIN aip_db.product p ON r.product_id = p.product_id where r.user_id = ?;";
 					 var values = [userId];
 					  con.query(sql, values, function (err, rows, fields) {
 						if (err) throw err;
