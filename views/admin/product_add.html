@@ -1,5 +1,5 @@
         <div id="divMain"  class="w3-container">
-            <form name="productAddForm"  ng-submit="createProduct()" novalidate>
+            <form name="productAddForm"  ng-submit="productAddForm.$valid && createProduct()">
                 <div class="w3-container"  style="padding:3px;width:80%;">
                     <h2>Add New Product</h2>
                 </div><!-- End div.w3-container -->
@@ -7,15 +7,15 @@
                     <p>
                         <label class="w3-text"><b>Product Name</b></label><label class="w3-text-red w3-small"><b>*</b></label></p>
                     <p>
-                        <input ng-model="inputPrdNm"class="w3-input_nowidth w3-border" style="width:90%" required/></p>
+                        <input ng-model="inputPrdNm"class="w3-input_nowidth w3-border" style="width:90%"  ng-required="true"/></p>
                     <p>
-                        <label class="w3-text"><b>Price</b></label><label class="w3-text-red w3-small"><b>*</b></label></p>
+                        <label class="w3-text"><b>Price (AUD)</b></label><label class="w3-text-red w3-small"><b>*</b></label></p>
                     <p>
-                        $ <input ng-model="inputPrice"class="w3-input_nowidth w3-border" style="width:90%" required/></p>
+                        <input ng-model="inputPrice"class="w3-input_nowidth w3-border" type = "number" placeholder="Decimal"ng-pattern="/^[0-9]+(\.[0-9]{1,2})?$/" step="0.01"  ng-required="true"/></p>
                     <p>
                         <label class="w3-text"><b>Ingredient</b></label><label class="w3-text-red w3-small"><b>*</b></label></p>
                     <p>
-                        <input ng-model="inputIngredient"class="w3-input_nowidth w3-border" style="width:90%" required/></p>
+                        <input ng-model="inputIngredient"class="w3-input_nowidth w3-border" style="width:90%"  ng-required="true"/></p>
                     <p>
                         <label class="w3-text"><b>Product Image</b></label><label class="w3-text-red w3-small"><b>*</b></label></p>
                     <div>
@@ -29,13 +29,14 @@
                             name="file"
                             ngf-pattern="'image/*'"
                             accept="image/*"
+                            ng-required="true"
                             ngf-max-size="20MB"
                         /></p>
                     </div>
                     <p>
                         <label class="w3-text"><b>Description</b></label><label class="w3-text-red w3-small"><b>*</b></label></p>
                     <p>
-                        <textarea rows="4" cols="50" class="w3-input_nowidth w3-border" style="width:90%" ng-model="inputPrdDesc"></textarea></p>
+                        <textarea rows="4" cols="50" class="w3-input_nowidth w3-border" style="width:90%" ng-model="inputPrdDesc"  ng-required="true"></textarea></p>
                 </div><!-- End div.w3-container -->
                 <div  class="w3-container"  style="padding:3px;width:80%;">
                     <p>
