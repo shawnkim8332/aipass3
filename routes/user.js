@@ -183,7 +183,7 @@ router.post("/confirmEmail",function(req,res){
 	var products = data.products;
 	console.log(data.products);
 	console.log(data.email);
-	var msg = "Hi, There<br/><br/>?";
+	var msg = "Hi, There<br/><br/>";
 	msg+= "Thank You For Making a recent order on Hello Fresh<br/> Here is a summary of order made<br/>";
 	var i=1;
 	for(j in products) {

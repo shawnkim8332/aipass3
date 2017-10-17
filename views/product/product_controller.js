@@ -24,10 +24,9 @@ angular.module('frontApp').controller('ProductController', ['$scope', '$http', '
 		
 	//function to add products to cart
 	$scope.addToCart = function(productName,productPrice) {
-		//var products = [];
 		products = JSON.parse(localStorage.getItem("products"));
-		console.log("Prducst are:"+ products);
-		if(products == null) {
+		//console.log("Prducst are:"+ products);
+		if(products == null || products == "undefined" || !(products instanceof Array)) {
 			var products = [];
 			products.push({name:productName, price:productPrice});
 			localStorage.setItem("products", JSON.stringify(products));
@@ -35,6 +34,7 @@ angular.module('frontApp').controller('ProductController', ['$scope', '$http', '
 			products.push({name:productName, price:productPrice});
 			localStorage.setItem("products", JSON.stringify(products));
 		}
+		alert("Product Added to cart");
 	};
 	
 	//function to add reviews to products
