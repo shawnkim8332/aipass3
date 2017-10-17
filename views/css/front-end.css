@@ -73,6 +73,7 @@ th {
 .list-group-item{
 	margin:5px;
 	border: 2px dashed #BBBBBB;
+	text-align:center;
 }
 .homepage{
 	background-image: url(../images/background.jpg);

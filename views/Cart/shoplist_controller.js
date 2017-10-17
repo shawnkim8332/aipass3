@@ -29,8 +29,8 @@ angular.module('frontApp')
 					alert("Some Error as occoured Please Try Again Later");
 				}
 				else {
-					alert("Thank You For Your Order!");
-					localStorage.setItem("products", "[{0}]");
+					alert("Thank You For Your Order! Please check your email for conformation");
+					localStorage.setItem("products", "[]");
 					$window.location.href = ("/");
 				}
 				
