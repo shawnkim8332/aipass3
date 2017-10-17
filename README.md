@@ -75,3 +75,33 @@ AIP Assignment 3
 6. Non-empty html elements must have corrsponding closing tags
 
 7. html document type must be declared as the first line of html code
+
+
+# Functionalities 
+
+•	Login 
+1.	Email address as Username
+2.	Retrieve password through Email link
+3.	After login the user can see and edit their reviews
+
+•	Sign up
+1.	First name, last name, Email address, and password should be needed to sign up
+
+•	Products List
+1.	A list of products would be shown 
+2.	User could check description, Ingredients and review of the product
+3.	In the review tab, User can add reviews 
+4.	Add the product to cart
+
+•	Cart
+1.	It will show a list of products which user have added to cart
+2.	User can remove the product from list
+3.	User can receive an email after clicking Buy button 
+
+•	API
+1.	User could search menus from various chain restaurant
+
+•	Admin
+1.	If user’s account is admin account, user can access admin page. 
+2.	Admin account could modify (delete and save) the product which include product name, price, ingredients, product images and description. 
+3.	Add new products to product list 
